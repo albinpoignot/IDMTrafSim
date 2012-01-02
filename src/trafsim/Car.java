@@ -1,10 +1,13 @@
+/**
+ * @author Albin Poignot, Julien Teruel
+ * @version 0.1
+ */
+
 package trafsim;
 
 /**
- * Representation of a car in the system
+ * Class representing a Car in the system
  * 
- * @author Albin Poignot, Julien Teruel
- * @version 0.1
  */
 public class Car {
 	
