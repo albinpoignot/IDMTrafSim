@@ -5,7 +5,7 @@
  * @version 0.1
  *
  */
-package trafsim;
+package trafsim.gui;
 
 import java.awt.FlowLayout;
 
@@ -13,6 +13,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
+
+import trafsim.trafsim.ListCar;
+
 
 /**
  * No description

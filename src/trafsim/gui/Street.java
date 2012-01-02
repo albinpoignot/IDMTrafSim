@@ -2,12 +2,15 @@
  * @author Albin Poignot, Julien Teruel
  * @version 0.1
  */
-package trafsim;
+package trafsim.gui;
 
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
+
+//import trafsim.trafsim.Car;
+import trafsim.trafsim.ListCar;
 
 /**
  * Graphic manipulation of a street. <strong>Only for drawing it !</strong>
@@ -76,9 +79,9 @@ public class Street extends Canvas {
 		g.drawRect(0, 30, width - 1, 5);
 		
 		g.setColor(Color.RED);
-	    for (Car car : carList) {
-			g.drawOval(car.getPosition(), 10, 10, 10);
-		}
+	    /*for (Car car : carList) {
+			g.drawOval(Integer.parseInt(car.getPosition().getX()), 10, 10, 10);
+		}*/
 	} 
 
 }

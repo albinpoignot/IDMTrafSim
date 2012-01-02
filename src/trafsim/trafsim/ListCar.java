@@ -3,7 +3,7 @@
  * @version 0.1
  */
 
-package trafsim;
+package trafsim.trafsim;
 
 import java.util.ArrayList;
 
