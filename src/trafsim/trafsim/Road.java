@@ -18,14 +18,16 @@ public class Road
 	 * End position of this road segment
 	 */
 	private Coordinate positionFin;
+	
 	/**
 	 * Graphical representation of the road segment
 	 */
 	private JFrame image;
+	
 	/**
 	 * Speed limit on this road segment
 	 */
-	private float velocityLimit;
+	private Float velocityLimit;
 	
 	/**
 	 * Overload Constructor

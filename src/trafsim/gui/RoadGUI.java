@@ -16,7 +16,7 @@ import trafsim.trafsim.ListCar;
  * Graphic manipulation of a street. <strong>Only for drawing it !</strong>
  *
  */
-public class Street extends Canvas {
+public class RoadGUI extends Canvas {
 
 	/**
 	 * Used in case of serialization. Useless here.
@@ -31,7 +31,7 @@ public class Street extends Canvas {
 	/**
 	 * Default constructor
 	 */
-	public Street(ListCar carList) {
+	public RoadGUI(ListCar carList) {
 
 		// Initialization of attributes
 		this.setCarList(carList);
@@ -45,7 +45,7 @@ public class Street extends Canvas {
 	/**
 	 * @param config
 	 */
-	public Street(GraphicsConfiguration config) {
+	public RoadGUI(GraphicsConfiguration config) {
 		super(config);
 		// TODO Auto-generated constructor stub
 	}

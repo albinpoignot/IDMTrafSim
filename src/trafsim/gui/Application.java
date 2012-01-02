@@ -42,7 +42,7 @@ public class Application {
 		 * TEST & DEBUG
 		 **************************/
 		ListCar cl = new ListCar();
-		Street street = new Street(cl);
+		RoadGUI street = new RoadGUI(cl);
 		
 		panel.add(street);
 		

@@ -11,23 +11,23 @@ public class IDM
 	/**
 	 * Desired velocity for all cars.
 	 */
-	private static float desiredVelocity ;
+	private static Float desiredVelocity ;
 	/**
 	 * Minimum spacing between all cars.
 	 */
-	private static float minimumSpacing;
+	private static Float minimumSpacing;
 	/**
 	 * Time headway between all cars.
 	 */
-	private static float timeHeadway;
+	private static Float timeHeadway;
 	/**
 	 * Acceleration factor of all cars.
 	 */
-	private static float acceleration;
+	private static Float acceleration;
 	/**
 	 * Comfortable braking deceleration factor for all cars.
 	 */
-	private static float brakingDeceleration;
+	private static Float brakingDeceleration;
 	
 	static void updateCar( ListCar car )
 	{

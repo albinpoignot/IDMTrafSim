@@ -25,10 +25,10 @@ public class TrafficLight
 	/**
 	 * Duration of the red light
 	 */
-	private int redGap;
+	private Integer redGap;
 	/**
 	 * Duration of switching between green and red
 	 */
-	private int switchGap;
+	private Integer switchGap;
 	
 }
