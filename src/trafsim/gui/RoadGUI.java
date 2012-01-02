@@ -9,8 +9,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
 
-//import trafsim.trafsim.Car;
-import trafsim.trafsim.ListCar;
+import trafsim.trafsim.Coordinate;
 
 /**
  * Graphic manipulation of a street. <strong>Only for drawing it !</strong>
@@ -24,22 +23,32 @@ public class RoadGUI extends Canvas {
 	private static final long serialVersionUID = 1L;
 
 	
-	private ListCar carList;
-	private static Integer height = 65;
-	private static Integer width = 1000;
+	//private ListCar carList;
+	private Coordinate position;
+	private Integer height;
+	private Integer width;
 	
 	/**
 	 * Default constructor
 	 */
-	public RoadGUI(ListCar carList) {
-
-		// Initialization of attributes
-		this.setCarList(carList);
+	public RoadGUI() {
 		
 		// Init some properties of the draw
 		setSize(width, height); 
 		setBackground(Color.darkGray);
 		
+	}
+	
+	public RoadGUI( Coordinate position, Integer height, Integer width ) {
+		
+		// Init attributes
+		this.position = position;
+		this.height = height;
+		this.width = width;
+		
+		// Init some properties of the draw
+		setSize(width, height); 
+		setBackground(Color.darkGray);
 	}
 
 	/**
@@ -54,16 +63,16 @@ public class RoadGUI extends Canvas {
 	/**
 	 * @return the carList
 	 */
-	public ListCar getCarList() {
+	/*public ListCar getCarList() {
 		return carList;
-	}
+	}*/
 
 	/**
 	 * @param carList the carList to set
 	 */
-	public void setCarList(ListCar carList) {
+	/*public void setCarList(ListCar carList) {
 		this.carList = carList;
-	}
+	}*/
 	
 	/**
 	 * Draw all the car in the carList attribute

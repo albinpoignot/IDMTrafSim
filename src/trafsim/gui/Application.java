@@ -14,7 +14,9 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
+import trafsim.trafsim.Coordinate;
 import trafsim.trafsim.ListCar;
+import trafsim.trafsim.Road;
 
 
 /**
@@ -42,9 +44,10 @@ public class Application {
 		 * TEST & DEBUG
 		 **************************/
 		ListCar cl = new ListCar();
-		RoadGUI street = new RoadGUI(cl);
+		Road street = new Road(new Coordinate(0, 0), 65, 1000, 25);
+		//RoadGUI street = new RoadGUI(cl);
 		
-		panel.add(street);
+		panel.add(street.getImage());
 		
 		// TODO Create graphic elements
 		
@@ -54,7 +57,7 @@ public class Application {
 		frame.pack();
 		frame.setVisible(true);
 		
-		street.repaint();
+		street.getImage().repaint();
 	}
 
 	/**

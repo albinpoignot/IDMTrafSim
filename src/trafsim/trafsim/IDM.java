@@ -1,7 +1,7 @@
 package trafsim.trafsim;
 
 /**
- * Representation the Intelligent Driver Model in the system
+ * Representation of the Intelligent Driver Model in the system
  * 
  * @author Albin Poignot, Julien Teruel
  * @version 0.1
@@ -29,7 +29,7 @@ public class IDM
 	 */
 	private static Float brakingDeceleration;
 	
-	static void updateCar( ListCar car )
+	static void updateCars( ListCar car )
 	{
 		
 	}
