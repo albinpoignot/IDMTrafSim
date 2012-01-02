@@ -33,7 +33,12 @@ public class Road
 	/**
 	 * Speed limit on this road segment
 	 */
-	private Float velocityLimit;
+	private Integer velocityLimit;
+	
+	/**
+	 * List of the car on the road
+	 */
+	private ListCar carList;
 	
 	/**
 	 * @return the positionStart
@@ -94,17 +99,31 @@ public class Road
 	/**
 	 * @return the velocityLimit
 	 */
-	public Float getVelocityLimit() {
+	public Integer getVelocityLimit() {
 		return velocityLimit;
 	}
 
 	/**
 	 * @param velocityLimit the velocityLimit to set
 	 */
-	public void setVelocityLimit(Float velocityLimit) {
+	public void setVelocityLimit(Integer velocityLimit) {
 		this.velocityLimit = velocityLimit;
 	}
 
+	/**
+	 * @return the carList
+	 */
+	public ListCar getCarList() {
+		return carList;
+	}
+
+	/**
+	 * @param carList the carList to set
+	 */
+	public void setCarList(ListCar carList) {
+		this.carList = carList;
+	}
+	
 	/**
 	 * Overload Constructor
 	 * @param position: Position
@@ -112,7 +131,7 @@ public class Road
 	 * @param width : Width
 	 * @param speedLimit : speed limit on the segment
 	 */
-	public Road( Coordinate position, Integer height, Integer width, float speedLimit )
+	public Road( Coordinate position, Integer height, Integer width, Integer speedLimit )
 	{
 		this.position = position;
 		this.height = height;

@@ -34,4 +34,20 @@ public class ListCar extends ArrayList<Car> {
 		// TODO Auto-generated constructor stub
 	}
 	
+	/**
+	 * Return the car in front of the car given
+	 * @param theCar The car you want to know the next
+	 * @return The Car in front of "theCar" on the road
+	 */
+	public Car getNext(Car theCar) {
+		/*
+		 * LONG VERSION ---
+		 * Integer index = this.indexOf(theCar);
+		 * Car inFront = this.get(index - 1);
+		 * return inFront;  
+		 */
+		
+		return this.get(this.indexOf(theCar));
+	}
+	
 }
