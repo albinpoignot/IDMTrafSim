@@ -12,37 +12,37 @@ public class Coordinate
 	/**
 	 *  The position on the X-axis
 	 */
-	private Integer x;
+	private Float x;
 	/**
 	 *  The position on the Y-Axis
 	 */
-	private Integer y;
+	private Float y;
 	
 	/**
 	 * @return x the current position on the X-axis
 	 */
-	public Integer getX() {
+	public Float getX() {
 		return x;
 	}
 
 	/**
 	 * @param x : the new value for the x
 	 */
-	public void setX(Integer x) {
+	public void setX(Float x) {
 		this.x = x;
 	}
 
 	/**
 	 * @return the current y value
 	 */
-	public Integer getY() {
+	public Float getY() {
 		return y;
 	}
 
 	/**
 	 * @param y : the new value for y
 	 */
-	public void setY(Integer y) {
+	public void setY(Float y) {
 		this.y = y;
 	}
 
@@ -52,8 +52,8 @@ public class Coordinate
 	 */
 	public Coordinate()
 	{
-		this.x = 0;
-		this.y = 0;
+		this.x = 0f;
+		this.y = 0f;
 	}
 	
 	/**
@@ -61,7 +61,7 @@ public class Coordinate
 	 * @param x : the position on the X_axis
 	 * @param y : the position on the Y-axis
 	 */
-	public Coordinate(Integer x, Integer y)
+	public Coordinate(Float x, Float y)
 	{
 		this.x = x;
 		this.y = y;

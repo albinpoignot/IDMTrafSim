@@ -50,4 +50,12 @@ public class ListCar extends ArrayList<Car> {
 		return this.get(this.indexOf(theCar));
 	}
 	
+	public void paintAllCars() {
+		
+		for (Car car : this) {
+			car.paint();
+		}
+		
+	}
+	
 }

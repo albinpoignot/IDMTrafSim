@@ -50,12 +50,11 @@ public class Application implements ActionListener {
 		 * TEST & DEBUG
 		 **************************/
 		cl = new ListCar();
-		Road street = new Road(new Coordinate(0, 0), 65, 1000, 25);
-		cl.add( new Car( 0, 50, new Float( 14 ) ) );
-		//RoadGUI street = new RoadGUI(cl);
+		Road street = new Road(new Coordinate(0f, 0f), 65, 1000, 25);
+		cl.add( new Car( 0f, 50f, new Float( 14 ) ) );
 		
 		panel.add(street.getImage());
-		
+		frame.add(cl.get(0).getImage());
 		// TODO Create graphic elements
 		
 		
@@ -66,7 +65,7 @@ public class Application implements ActionListener {
 		
 		street.getImage().repaint();
 		
-		Timer timer = new Timer( 20, this);
+		Timer timer = new Timer( 2000, this);
 		timer.setInitialDelay(0);
 		timer.start(); 
 		
@@ -75,9 +74,11 @@ public class Application implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) 
 	{
-		System.out.println("Vitesse avant : " + cl.get(0).getVelocity() );
+		System.out.println("Vitesse avant : " + cl.get(0).getVelocity() + " || Position avant (x) : " + cl.get(0).getPosition().getX());
 		IDM.updateCarsVelocity( this.cl );
-		System.out.println("Vitesse apres : " + cl.get(0).getVelocity() );
+		IDM.updateCarsPosition( this.cl );
+		this.cl.paintAllCars();
+		System.out.println("Vitesse apres : " + cl.get(0).getVelocity() + " || Position après (x) : " + cl.get(0).getPosition().getX() );
 	}
 
 	/**

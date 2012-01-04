@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
 
+import trafsim.trafsim.Car;
 import trafsim.trafsim.Coordinate;
 
 /**
@@ -89,8 +90,9 @@ public class RoadGUI extends Canvas {
 		g.fillRect(2, 30, width - 5, 3);
 		
 		g.setColor(Color.RED);
-	    /*for (Car car : carList) {
-			g.drawOval(Integer.parseInt(car.getPosition().getX()), 10, 10, 10);
+	    
+		/*for (Car car : carList) {
+			car.paint();
 		}*/
 	} 
 

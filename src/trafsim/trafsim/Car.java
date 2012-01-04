@@ -1,6 +1,7 @@
 package trafsim.trafsim;
 
-import javax.swing.JFrame;
+import trafsim.gui.CarGUI;
+
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -14,7 +15,7 @@ import java.awt.GraphicsConfiguration;
  * @version 0.1
  */
 
-public class Car extends Canvas
+public class Car
 {	
 	/**
 	 * 
@@ -32,6 +33,11 @@ public class Car extends Canvas
 	 * car's current 2D coordinate
 	 */
 	private Coordinate position;
+
+	/**
+	 * Graphical representation of the car
+	 */
+	private CarGUI image;
 
 	/**
 	 * @return the identifier
@@ -75,29 +81,49 @@ public class Car extends Canvas
 		this.velocity = velocity;
 	}
 	
+	/**
+	 * @return the image
+	 */
+	public CarGUI getImage() {
+		return image;
+	}
+
+	/**
+	 * @param image the image to set
+	 */
+	public void setImage(CarGUI image) {
+		this.image = image;
+	}
+	
+	/**
+	 * Default constructor
+	 */
 	public Car()
 	{
 		position = new Coordinate();
 		velocity = new Float(0);
+		image = new CarGUI(position, 20, 20);
 	}
 	
-	public Car( Integer x, Integer y, Float v )
+	/**
+	 * Overload constructor to initialize attributes
+	 * @param x The position of the car on the x axis
+	 * @param y The position of the car on the y axis
+	 * @param v The initial velocity
+	 */
+	public Car( Float x, Float y, Float v )
 	{
 		position = new Coordinate( x, y );
 		velocity = v;
+		image = new CarGUI(position, 20, 20);
 	}
 	
-	public Car(GraphicsConfiguration config) 
+	/**
+	 * Repaint the CarGUI associated instance
+	 */
+	public void paint()
 	{
-		super(config);
-		// TODO Auto-generated constructor stub
-	}
-	
-	public void paint(Graphics g) 
-	{
-		g.setColor(Color.RED);
-		g.drawRect( position.getX(), position.getY(), 10, 10 );
-		g.fillRect( position.getX(), position.getY(), 10, 10 );
+		image.repaint();
 	}
 	
 }

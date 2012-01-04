@@ -43,7 +43,7 @@ public class IDM
 	 */
 	public static void updateCarsVelocity( ListCar carList ) {
 		
-		// TODO In term5 : set a correct value for the car lenght (15 for now because no CarGUI class exists)
+		// TODO In term5 : set a correct value for the car length (15 for now because no CarGUI class exists)
 		
 		/*
 		 * To understand the following lines, please take a look on the IDM.
@@ -89,7 +89,11 @@ public class IDM
 	 * @param carList The ListCar of the Car that should be updated
 	 */
 	public static void updateCarsPosition( ListCar carList ) {
-		
+		for (Car car : carList) {
+			System.out.println("  Velocity : " + car.getVelocity() + " || rounded value : " + Math.round(car.getPosition().getX() + car.getVelocity()));
+			Coordinate nPos = new Coordinate(car.getPosition().getX() + car.getVelocity(), car.getPosition().getY());
+			car.setPosition(nPos);
+		}
 	}
 	
 	/**
