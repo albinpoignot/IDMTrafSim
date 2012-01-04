@@ -86,11 +86,12 @@ public class CarGUI extends Canvas {
 	/**
 	 * Draw all the car in the carList attribute
 	 */
+	@Override
 	public void paint(Graphics g) {
 		
 		g.setColor(Color.RED);
-		System.out.println("     Position in the CarGUI : " + position.getX());
-		g.drawRect( Math.round(position.getX()), Math.round(position.getY()), 10, 10 );
+		//System.out.println("     Position in the CarGUI : " + position.getX());
+		//g.drawRect( Math.round(position.getX()), Math.round(position.getY()), 10, 10 );
 		g.fillRect( Math.round(position.getX()), Math.round(position.getY()), 10, 10 );
 		
 	} 

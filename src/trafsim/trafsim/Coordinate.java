@@ -59,7 +59,7 @@ public class Coordinate
 	/**
 	 * Constructor overload, to set x and y to specified values
 	 * @param x : the position on the X_axis
-	 * @param y : the position on the Y-axis
+	 * @param y : the position on the Y_axis
 	 */
 	public Coordinate(Float x, Float y)
 	{

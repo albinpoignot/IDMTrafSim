@@ -13,7 +13,7 @@ public class IDM
 	/**
 	 * Desired velocity for all cars.
 	 */
-	private static Float desiredVelocity = new Float(25);
+	private static Float desiredVelocity = new Float(12);
 	/**
 	 * Minimum spacing between all cars.
 	 */
@@ -67,15 +67,22 @@ public class IDM
 		for (Car car : carList) {
 			
 			// Calculate the new velocity of the current car
-			term1 = (float) Math.pow(car.getVelocity() / IDM.desiredVelocity, 2);
-			term2 = car.getVelocity() - carList.getNext(car).getVelocity();
-			term3 = (float) (car.getVelocity() * term2 / Math.sqrt(IDM.acceleration * IDM.brakingDeceleration));
-			term4 = IDM.minimumSpacing + car.getVelocity() * IDM.timeHeadway + term3;
-			term5 = (float) (carList.getNext(car).getPosition().getX() - car.getPosition().getX() - 15);
-			term6 = (float) Math.pow(term4 / term5, 2);
-			vpoint = IDM.acceleration * ( 1 - term1 - term6 );
 			
-			System.out.println(" Valeurs des termes : " + term1 +" "+ term2+" "+ term3+" "+ term4+" "+ term5+" "+ term6 );
+			term1 = (float) Math.pow(car.getVelocity() / IDM.desiredVelocity, delta);  // Delta et non 2
+
+			if( carList.size() > 1 && carList.lastIndexOf(car) != (carList.size()-1) ) // Other case, voir si besoin d'un autre pour high approaching rate
+			{
+				term2 = car.getVelocity() - carList.getNext(car).getVelocity();
+				term3 = (float) (car.getVelocity() * term2 / ( 2 * Math.sqrt(IDM.acceleration * IDM.brakingDeceleration)));
+				term4 = IDM.minimumSpacing + car.getVelocity() * IDM.timeHeadway + term3;
+				term5 = (float) Math.abs( carList.getNext(car).getPosition().getX() - car.getPosition().getX() - 50);
+				term6 = (float) Math.pow(term4 / term5, 2);
+				vpoint = IDM.acceleration * ( 1 - term1 - term6 ) + car.getVelocity();
+			}
+			else // Free road Behaviour 1 car or first car 
+			{
+				vpoint = IDM.acceleration * ( 1 - term1 ) + car.getVelocity();
+			}
 			
 			// Finally, update the velocity of the current car with the found value 
 			car.setVelocity(vpoint);
@@ -88,14 +95,18 @@ public class IDM
 	 * 
 	 * @param carList The ListCar of the Car that should be updated
 	 */
-	public static void updateCarsPosition( ListCar carList ) {
-		for (Car car : carList) {
-			System.out.println("  Velocity : " + car.getVelocity() + " || rounded value : " + Math.round(car.getPosition().getX() + car.getVelocity()));
+	public static void updateCarsPosition( ListCar carList ) 
+	{
+		for (Car car : carList) 
+		{
+			//System.out.println("  Velocity : " + car.getVelocity() + " || rounded value : " + Math.round(car.getPosition().getX() + car.getVelocity()));
 			
 			// TODO Remove the debug line...
-			Coordinate nPos = new Coordinate(car.getPosition().getX() + 10, car.getPosition().getY()); // Debug
+			//System.out.println("   1--> " + (car.getPosition().getX() ));// + 10) / 50);
+			Coordinate nPos = new Coordinate( car.getPosition().getX() + (car.getVelocity() / 50), car.getPosition().getY()); // Debug
 			//Coordinate nPos = new Coordinate(car.getPosition().getX() + car.getVelocity(), car.getPosition().getY()); // Prod
 			car.setPosition(nPos);
+			//System.out.println("   2--> " + (car.getPosition().getX() ));// + 10) / 50);
 		}
 	}
 	

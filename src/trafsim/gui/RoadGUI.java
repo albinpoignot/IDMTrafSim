@@ -101,24 +101,28 @@ public class RoadGUI extends Canvas {
 	 */
 	public void paint(Graphics g) {
 		
+		// Draw the road
+		g.setColor(Color.DARK_GRAY);
+		g.fillRect(Math.round(position.getX()), Math.round(position.getY()), width - 1, height - 1);
+				
 		// Draw the border
 		g.setColor(Color.BLUE);
-		g.drawRect(0, 0, width - 1, height - 1); // draw border
-	    
+		g.drawRect(Math.round(position.getX()), Math.round(position.getY()), width - 1, height - 1);
+		
 		// Draw the middle line
 		g.setColor(Color.WHITE);
-		g.fillRect(2, 30, width - 5, 3);
+		g.fillRect(Math.round(position.getX()) + 1, Math.round(position.getY()) + 30, width - 5, 3);
 		
 		// Draw the cars
-		g.setColor(Color.RED);
+		/*g.setColor(Color.RED);
 	    
-		for (Car car : carList) {
+		/*for (Car car : carList) {
 			//car.paint();
 			g.setColor(Color.RED);
 			System.out.println("     Position of the Car : " + car.getPosition().getX());
 			//g.drawRect( Math.round(car.getPosition().getX()), Math.round(car.getPosition().getY()), 10, 10 );
 			g.fillRect( Math.round(car.getPosition().getX()), Math.round(car.getPosition().getY()), 10, 10 );
-		}
+		}*/
 
 	}
 

@@ -7,7 +7,9 @@
  */
 package trafsim.gui;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -28,8 +30,13 @@ import trafsim.trafsim.Road;
  * No description
  *
  */
-public class Application implements ActionListener {
+public class Application extends JFrame implements ActionListener {
 
+	/**
+	 * @serialField
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private JPanel panel;
 	private JFrame frame;
 	private Timer timer;
@@ -39,49 +46,58 @@ public class Application implements ActionListener {
 	public Application() {
 		
 		// Init frame
-		frame = new JFrame("IDM Traffic Simulation");
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		this.setSize(1100, 600);
 		
-		// Init panel
-		panel = new JPanel();
-		panel.setLayout(new FlowLayout());
-		panel.setBorder(new EmptyBorder(30, 30, 30, 30));
 		
 		/**************************
 		 * TEST & DEBUG
 		 **************************/
 		cl = new ListCar();
-		street = new Road(new Coordinate(0f, 0f), 65, 1000, 25);
-		cl.add( new Car( 0f, 10f, new Float( 14 ) ) );
+		street = new Road(new Coordinate(10f, 30f), 65, 1000, 25);
+		
+		cl.add(0, new Car( 64f, 66f, 12f ) );
+		cl.add(1, new Car( 12f, 66f, 5f ) );
+		cl.add(2, new Car( 32f, 66f, 0f ) );
+		
+		
 		street.setCarList(cl);
-		panel.add(street.getImage());
-		//panel.add(cl.get(0).getImage());
-		// TODO Create graphic elements
 		
+
+		this.repaint();
+		this.setVisible(true);
 		
-		// Add panel to the frame and display them
-		frame.add(panel);
-		frame.pack();
-		frame.setVisible(true);
-		
-		street.getImage().repaint();
-		
-		Timer timer = new Timer( 2000, this);
+		Timer timer = new Timer( 20, this);
 		timer.setInitialDelay(0);
-		timer.start(); 
+		timer.start();
 		
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) 
 	{
-		System.out.println("Vitesse avant : " + cl.get(0).getVelocity() + " || Position avant (x) : " + cl.get(0).getImage().getPosition().getX());
+		//System.out.println("Vitesse avant : " + cl.get(0).getVelocity() + " || Position avant (x) : " + cl.get(0).getPosition().getX());
+		
 		IDM.updateCarsVelocity( this.cl );
 		IDM.updateCarsPosition( this.cl );
 		//this.cl.paintAllCars();
-		street.getImage().repaint();
+		//street.getImage().repaint();
 		//frame.pack();
-		System.out.println("Vitesse apres : " + cl.get(0).getVelocity() + " || Position après (x) : " + cl.get(0).getImage().getPosition().getX() );
+		
+		//System.out.println("Vitesse apres : " + cl.get(0).getVelocity() + " || Position après (x) : " + cl.get(0).getPosition().getX() );
+		
+		this.repaint();
+	}
+	
+	@Override
+	public void paint(Graphics g) {
+		super.paint(g);
+		
+		street.getImage().paint(g);
+		
+		for (Car car : cl) {
+			car.getImage().paint(g);
+		}
 	}
 
 	/**
