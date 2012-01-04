@@ -1,6 +1,10 @@
 package trafsim.trafsim;
 
 import javax.swing.JFrame;
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
 
 
 /**
@@ -10,8 +14,12 @@ import javax.swing.JFrame;
  * @version 0.1
  */
 
-public class Car 
+public class Car extends Canvas
 {	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * car's unique ID
 	 */
@@ -24,10 +32,6 @@ public class Car
 	 * car's current 2D coordinate
 	 */
 	private Coordinate position;
-	/**
-	 * car's graphical representation
-	 */
-	private JFrame image;
 
 	/**
 	 * @return the identifier
@@ -71,10 +75,29 @@ public class Car
 		this.velocity = velocity;
 	}
 	
-	Car()
+	public Car()
 	{
 		position = new Coordinate();
 		velocity = new Float(0);
+	}
+	
+	public Car( Integer x, Integer y, Float v )
+	{
+		position = new Coordinate( x, y );
+		velocity = v;
+	}
+	
+	public Car(GraphicsConfiguration config) 
+	{
+		super(config);
+		// TODO Auto-generated constructor stub
+	}
+	
+	public void paint(Graphics g) 
+	{
+		g.setColor(Color.RED);
+		g.drawRect( position.getX(), position.getY(), 10, 10 );
+		g.fillRect( position.getX(), position.getY(), 10, 10 );
 	}
 	
 }
