@@ -85,7 +85,8 @@ public class RoadGUI extends Canvas {
 	    
 		// Draw the middle line
 		g.setColor(Color.WHITE);
-		g.drawRect(0, 30, width - 1, 5);
+		g.drawRect(2, 30, width - 5, 3);
+		g.fillRect(2, 30, width - 5, 3);
 		
 		g.setColor(Color.RED);
 	    /*for (Car car : carList) {

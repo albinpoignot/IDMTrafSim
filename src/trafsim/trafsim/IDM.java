@@ -13,23 +13,23 @@ public class IDM
 	/**
 	 * Desired velocity for all cars.
 	 */
-	private static Float desiredVelocity ;
+	private static Float desiredVelocity = new Float(25);
 	/**
 	 * Minimum spacing between all cars.
 	 */
-	private static Float minimumSpacing;
+	private static Float minimumSpacing = new Float(2);
 	/**
 	 * Time headway between all cars.
 	 */
-	private static Float timeHeadway;
+	private static Float timeHeadway = new Float(1.5);
 	/**
 	 * Acceleration factor of all cars.
 	 */
-	private static Float acceleration;
+	private static Float acceleration = new Float(0.3);
 	/**
 	 * Comfortable braking deceleration factor for all cars.
 	 */
-	private static Float brakingDeceleration;
+	private static Float brakingDeceleration = new Float(3.0);
 	
 	/**
 	 * Independant factor
@@ -41,14 +41,14 @@ public class IDM
 	 * 
 	 * @param carList The ListCar of the Car that should be updated
 	 */
-	private static void updateCarsVelocity( ListCar carList ) {
+	public static void updateCarsVelocity( ListCar carList ) {
 		
 		// TODO In term5 : set a correct value for the car lenght (15 for now because no CarGUI class exists)
 		
 		/*
 		 * To understand the following lines, please take a look on the IDM.
 		 * 
-		 * vpoint = a * { 1 - (v/v0)^delta - ([s_star(v, Delta v_alpha)] / [s_alpha] ^2 }
+		 * vpoint = a * { 1 - (v/v0)^delta - (([s_star(v, Delta v_alpha)] / [s_alpha]) ^2 }
 		 * 
 		 * Here :
 		 * 	term1 = (v/v0)^delta
@@ -67,13 +67,15 @@ public class IDM
 		for (Car car : carList) {
 			
 			// Calculate the new velocity of the current car
-			term1 = (float) Math.pow(car.getVelocity() * IDM.desiredVelocity, 2);
+			term1 = (float) Math.pow(car.getVelocity() / IDM.desiredVelocity, 2);
 			term2 = car.getVelocity() - carList.getNext(car).getVelocity();
 			term3 = (float) (car.getVelocity() * term2 / Math.sqrt(IDM.acceleration * IDM.brakingDeceleration));
 			term4 = IDM.minimumSpacing + car.getVelocity() * IDM.timeHeadway + term3;
 			term5 = (float) (carList.getNext(car).getPosition().getX() - car.getPosition().getX() - 15);
 			term6 = (float) Math.pow(term4 / term5, 2);
 			vpoint = IDM.acceleration * ( 1 - term1 - term6 );
+			
+			System.out.println(" Valeurs des termes : " + term1 +" "+ term2+" "+ term3+" "+ term4+" "+ term5+" "+ term6 );
 			
 			// Finally, update the velocity of the current car with the found value 
 			car.setVelocity(vpoint);
@@ -86,7 +88,7 @@ public class IDM
 	 * 
 	 * @param carList The ListCar of the Car that should be updated
 	 */
-	private static void updateCarsPosition( ListCar carList ) {
+	public static void updateCarsPosition( ListCar carList ) {
 		
 	}
 	

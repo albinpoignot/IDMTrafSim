@@ -8,13 +8,18 @@
 package trafsim.gui;
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
+import trafsim.trafsim.Car;
 import trafsim.trafsim.Coordinate;
+import trafsim.trafsim.IDM;
 import trafsim.trafsim.ListCar;
 import trafsim.trafsim.Road;
 
@@ -23,11 +28,12 @@ import trafsim.trafsim.Road;
  * No description
  *
  */
-public class Application {
+public class Application implements ActionListener {
 
 	private JPanel panel;
 	private JFrame frame;
-	
+	private Timer timer;
+	private ListCar cl;
 	
 	public Application() {
 		
@@ -43,8 +49,9 @@ public class Application {
 		/**************************
 		 * TEST & DEBUG
 		 **************************/
-		ListCar cl = new ListCar();
+		cl = new ListCar();
 		Road street = new Road(new Coordinate(0, 0), 65, 1000, 25);
+		cl.add( new Car( 0, 50, new Float( 14 ) ) );
 		//RoadGUI street = new RoadGUI(cl);
 		
 		panel.add(street.getImage());
@@ -58,6 +65,19 @@ public class Application {
 		frame.setVisible(true);
 		
 		street.getImage().repaint();
+		
+		Timer timer = new Timer( 20, this);
+		timer.setInitialDelay(0);
+		timer.start(); 
+		
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent arg0) 
+	{
+		System.out.println("Vitesse avant : " + cl.get(0).getVelocity() );
+		IDM.updateCarsVelocity( this.cl );
+		System.out.println("Vitesse apres : " + cl.get(0).getVelocity() );
 	}
 
 	/**
@@ -67,6 +87,7 @@ public class Application {
 		@SuppressWarnings("unused")
 		Application app = new Application();
 		System.out.println("Application launched");
+
 	}
 
 }
