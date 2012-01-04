@@ -67,7 +67,6 @@ public class IDM
 		for (Car car : carList) {
 			
 			// Calculate the new velocity of the current car
-			
 			term1 = (float) Math.pow(car.getVelocity() * IDM.desiredVelocity, 2);
 			term2 = car.getVelocity() - carList.getNext(car).getVelocity();
 			term3 = (float) (car.getVelocity() * term2 / Math.sqrt(IDM.acceleration * IDM.brakingDeceleration));

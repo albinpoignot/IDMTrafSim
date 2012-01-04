@@ -138,7 +138,7 @@ public class Road
 		this.width = width;
 		this.velocityLimit = speedLimit;
 		
-		image = new RoadGUI(position, height, width);
+		this.image = new RoadGUI(position, height, width);
 	}
 	
 }

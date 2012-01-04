@@ -14,21 +14,32 @@ public class TrafficLight
 	 * Position in the system
 	 */
 	private Coordinate position;
+	
 	/**
 	 * Graphical representation 
 	 */
 	private JFrame image;
+	
 	/**
 	 * Duration of the green light
 	 */
-	private int greenGap;
+	private Integer greenGap;
+	
 	/**
 	 * Duration of the red light
 	 */
 	private Integer redGap;
+	
 	/**
 	 * Duration of switching between green and red
 	 */
 	private Integer switchGap;
 	
+	/**
+	 * Default constructor
+	 * @param position The position of traffic lights
+	 */
+	public TrafficLight(Coordinate position) {
+		
+	}
 }
