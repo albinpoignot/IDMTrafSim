@@ -34,6 +34,7 @@ public class Application implements ActionListener {
 	private JFrame frame;
 	private Timer timer;
 	private ListCar cl;
+	private Road street;
 	
 	public Application() {
 		
@@ -50,11 +51,11 @@ public class Application implements ActionListener {
 		 * TEST & DEBUG
 		 **************************/
 		cl = new ListCar();
-		Road street = new Road(new Coordinate(0f, 0f), 65, 1000, 25);
-		cl.add( new Car( 0f, 50f, new Float( 14 ) ) );
-		
+		street = new Road(new Coordinate(0f, 0f), 65, 1000, 25);
+		cl.add( new Car( 0f, 10f, new Float( 14 ) ) );
+		street.setCarList(cl);
 		panel.add(street.getImage());
-		frame.add(cl.get(0).getImage());
+		//panel.add(cl.get(0).getImage());
 		// TODO Create graphic elements
 		
 		
@@ -74,11 +75,13 @@ public class Application implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) 
 	{
-		System.out.println("Vitesse avant : " + cl.get(0).getVelocity() + " || Position avant (x) : " + cl.get(0).getPosition().getX());
+		System.out.println("Vitesse avant : " + cl.get(0).getVelocity() + " || Position avant (x) : " + cl.get(0).getImage().getPosition().getX());
 		IDM.updateCarsVelocity( this.cl );
 		IDM.updateCarsPosition( this.cl );
-		this.cl.paintAllCars();
-		System.out.println("Vitesse apres : " + cl.get(0).getVelocity() + " || Position après (x) : " + cl.get(0).getPosition().getX() );
+		//this.cl.paintAllCars();
+		street.getImage().repaint();
+		//frame.pack();
+		System.out.println("Vitesse apres : " + cl.get(0).getVelocity() + " || Position après (x) : " + cl.get(0).getImage().getPosition().getX() );
 	}
 
 	/**

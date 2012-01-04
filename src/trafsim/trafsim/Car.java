@@ -18,19 +18,20 @@ import java.awt.GraphicsConfiguration;
 public class Car
 {	
 	/**
-	 * 
+	 * @serialField
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	/**
-	 * car's unique ID
+	 * Car's unique ID
 	 */
 	private Integer identifier;
 	/**
-	 * car's current velocity
+	 * Car's current velocity
 	 */
 	private Float velocity;
 	/**
-	 * car's current 2D coordinate
+	 * Car's current 2D coordinate
 	 */
 	private Coordinate position;
 
@@ -65,6 +66,7 @@ public class Car
 	 */
 	public void setPosition(Coordinate position) {
 		this.position = position;
+		this.image.setPosition(position);
 	}
 
 	/**

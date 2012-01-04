@@ -91,7 +91,10 @@ public class IDM
 	public static void updateCarsPosition( ListCar carList ) {
 		for (Car car : carList) {
 			System.out.println("  Velocity : " + car.getVelocity() + " || rounded value : " + Math.round(car.getPosition().getX() + car.getVelocity()));
-			Coordinate nPos = new Coordinate(car.getPosition().getX() + car.getVelocity(), car.getPosition().getY());
+			
+			// TODO Remove the debug line...
+			Coordinate nPos = new Coordinate(car.getPosition().getX() + 10, car.getPosition().getY()); // Debug
+			//Coordinate nPos = new Coordinate(car.getPosition().getX() + car.getVelocity(), car.getPosition().getY()); // Prod
 			car.setPosition(nPos);
 		}
 	}

@@ -122,6 +122,7 @@ public class Road
 	 */
 	public void setCarList(ListCar carList) {
 		this.carList = carList;
+		this.image.setCarList(carList);
 	}
 	
 	/**

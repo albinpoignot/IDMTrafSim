@@ -11,6 +11,7 @@ import java.awt.GraphicsConfiguration;
 
 import trafsim.trafsim.Car;
 import trafsim.trafsim.Coordinate;
+import trafsim.trafsim.ListCar;
 
 /**
  * Graphic manipulation of a street. <strong>Only for drawing it !</strong>
@@ -23,10 +24,24 @@ public class RoadGUI extends Canvas {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * List of the cars on the road
+	 */
+	private ListCar carList;
 	
-	//private ListCar carList;
+	/**
+	 * Position of the road
+	 */
 	private Coordinate position;
+	
+	/**
+	 * Height of the road
+	 */
 	private Integer height;
+	
+	/**
+	 * Width of the road
+	 */
 	private Integer width;
 	
 	/**
@@ -40,6 +55,12 @@ public class RoadGUI extends Canvas {
 		
 	}
 	
+	/**
+	 * Overload constructor to init attributes
+	 * @param position Position of the road
+	 * @param height Height of the road
+	 * @param width Width of the road
+	 */
 	public RoadGUI( Coordinate position, Integer height, Integer width ) {
 		
 		// Init attributes
@@ -64,19 +85,19 @@ public class RoadGUI extends Canvas {
 	/**
 	 * @return the carList
 	 */
-	/*public ListCar getCarList() {
+	public ListCar getCarList() {
 		return carList;
-	}*/
+	}
 
 	/**
 	 * @param carList the carList to set
 	 */
-	/*public void setCarList(ListCar carList) {
+	public void setCarList(ListCar carList) {
 		this.carList = carList;
-	}*/
+	}
 	
 	/**
-	 * Draw all the car in the carList attribute
+	 * Draw all the cars in the carList attribute
 	 */
 	public void paint(Graphics g) {
 		
@@ -86,14 +107,19 @@ public class RoadGUI extends Canvas {
 	    
 		// Draw the middle line
 		g.setColor(Color.WHITE);
-		g.drawRect(2, 30, width - 5, 3);
 		g.fillRect(2, 30, width - 5, 3);
 		
+		// Draw the cars
 		g.setColor(Color.RED);
 	    
-		/*for (Car car : carList) {
-			car.paint();
-		}*/
-	} 
+		for (Car car : carList) {
+			//car.paint();
+			g.setColor(Color.RED);
+			System.out.println("     Position of the Car : " + car.getPosition().getX());
+			//g.drawRect( Math.round(car.getPosition().getX()), Math.round(car.getPosition().getY()), 10, 10 );
+			g.fillRect( Math.round(car.getPosition().getX()), Math.round(car.getPosition().getY()), 10, 10 );
+		}
+
+	}
 
 }
