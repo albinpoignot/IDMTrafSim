@@ -78,6 +78,9 @@ public class Application implements ActionListener {
 		System.out.println("Vitesse avant : " + cl.get(0).getVelocity() );
 		IDM.updateCarsVelocity( this.cl );
 		System.out.println("Vitesse apres : " + cl.get(0).getVelocity() );
+		System.out.println("Position avant : " + cl.get(0).getPosition().getX() );
+		IDM.updateCarsPosition( this.cl, 20 );
+		System.out.println("Position après : " + cl.get(0).getPosition().getX() );
 	}
 
 	/**
