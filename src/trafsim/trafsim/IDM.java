@@ -74,16 +74,17 @@ public class IDM
 	
 				if( carList.lastIndexOf(car) != (carList.size()-1)  ) // Other case, voir si besoin d'un autre pour high approaching rate
 				{
-					term2 = car.getVelocity() - carList.getNext(car).getVelocity();
+					term2 = Math.abs( car.getVelocity() - carList.getNext(car).getVelocity() );
+					// Le term2 est celui qui fait tout partir en couille quand on rajoute les feux, la valeur aboslue donne un resultat mais non probant
 					term3 = (float) (car.getVelocity() * term2 / ( 2 * Math.sqrt(IDM.acceleration * IDM.brakingDeceleration)));
 					term4 = IDM.minimumSpacing + car.getVelocity() * IDM.timeHeadway + term3;
 					term5 = (float) carList.getNext(car).getPosition().getX() - car.getPosition().getX() - 10;
 					term6 = (float) Math.pow(term4 / term5, 2);
 					vpoint = IDM.acceleration * ( 1 - term1 - term6 ) + car.getVelocity();
 					
-					if( carList.lastIndexOf(car) == 1 )
+					if( vpoint < 0 )
 					{
-						//System.out.println( term1 + " - " + term2 + " - " + term3 + " - " + term4 + " - " + term5 + " - " + term6 );
+						System.out.println("Voiture nouvelle vitesse " + vpoint + " " + term2 + " " + term3 + " " + term4 + " " + term5 + " " + term6);
 					}
 					
 					//System.out.println( "Vitesse apres : " + car.getVelocity() + " . " + carList.getNext(car).getPosition().getX() + "." + car.getPosition().getX()  );

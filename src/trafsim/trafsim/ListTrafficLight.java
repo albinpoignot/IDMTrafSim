@@ -64,17 +64,5 @@ public class ListTrafficLight extends ArrayList<TrafficLight> {
 		}
 		
 	}
-	
-	public boolean modificationEnCours()
-	{
-		for( int i = 0; i < this.size(); i++ )
-		{
-			if( this.get(i).isModification() )
-			{
-				return true;
-			}
-		}
-		return false;
-	}
 }
 

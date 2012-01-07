@@ -48,7 +48,6 @@ public class TrafficLight implements ActionListener
 	private Timer timerR;
 	private Timer timerG;
 	private Timer timerS;
-	private boolean modification;
 	private final Semaphore sem;
 	
 	/**
@@ -61,7 +60,6 @@ public class TrafficLight implements ActionListener
 		this.position = position;
 		this.cl = cl;	
 		this.car = new Car( position.getX(), position.getY(), 0f, 0f );
-		this.modification = false;
 		this.sem = sem;
 		
 		try {
@@ -85,6 +83,7 @@ public class TrafficLight implements ActionListener
 	private void insererFeu() throws Exception 
 	{
 		sem.acquire(); 
+		//System.out.println("Insertion feu - DEBUT");
 		int index = 0;
 		
 		for( int i = 0; i < cl.size(); i ++ )
@@ -94,31 +93,26 @@ public class TrafficLight implements ActionListener
 				index++;
 			}
 		}
-		System.out.println("Je rajoute le feu à l'index : " + index );
+		//System.out.println("Je rajoute le feu à l'index : " + index );
 		cl.add(index, this.car );
+		//System.out.println("Insertion feu - FIN");
 		sem.release();
 	}
 	
 	private void enleverFeu() throws Exception
 	{
 		this.sem.acquire();
+		//System.out.println("Enleve feu - DEBUT");
 		for( int i = 0; i < cl.size(); i ++ )
 		{
 			if( cl.get(i) == car )
 			{
-				System.out.println("J'enelve le feu à l'index : " + i );
+				//System.out.println("J'enelve le feu à l'index : " + i );
 				cl.remove(i);
 			}
 		}
+		//System.out.println("Enleve feu - FIN");
 		this.sem.release();
-	}
-
-	public boolean isModification() {
-		return modification;
-	}
-
-	public void setModification(boolean modification) {
-		this.modification = modification;
 	}
 
 	@Override

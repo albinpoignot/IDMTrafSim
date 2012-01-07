@@ -46,7 +46,7 @@ public class Application extends JFrame implements ActionListener {
 	private ListCar cl;
 	private ListTrafficLight tl;
 	private Road street;
-	private final Semaphore sem = new Semaphore( 1, true); 
+	private final Semaphore sem = new Semaphore( 1, false); 
 	
 	public Semaphore getSem() {
 		return sem;
@@ -90,7 +90,7 @@ public class Application extends JFrame implements ActionListener {
 		tl = new ListTrafficLight();
 		tl.add( new TrafficLight( new Coordinate( 300f, 80f), cl, sem ) );
 		tl.add( new TrafficLight( new Coordinate( 600f, 80f), cl, sem ) );
-		tl.add( new TrafficLight( new Coordinate( 800f, 80f), cl, sem ) );
+		//tl.add( new TrafficLight( new Coordinate( 800f, 80f), cl, sem ) );
 	}
 	
 	
@@ -105,8 +105,10 @@ public class Application extends JFrame implements ActionListener {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			//System.out.println("Update velocité et position - Debut");
 			IDM.updateCarsVelocity( this.cl );
 			IDM.updateCarsPosition( this.cl );
+			//System.out.println("Update velocité et position - FIN");
 			sem.release();
 		//System.out.println("Vitesse apres : " + cl.get(0).getVelocity() + " || Position aprÃ¨s (x) : " + cl.get(0).getPosition().getX() );
 		
