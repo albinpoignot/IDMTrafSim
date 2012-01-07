@@ -23,6 +23,19 @@ public class Car
 	private static final long serialVersionUID = 1L;
 	
 	/**
+	 * Desired velocity for all cars.
+	 */
+	private Float desiredVelocity;
+	
+	public Float getDesiredVelocity() {
+		return desiredVelocity;
+	}
+
+	public void setDesiredVelocity(Float desiredVelocity) {
+		this.desiredVelocity = desiredVelocity;
+	}
+
+	/**
 	 * Car's unique ID
 	 */
 	private Integer identifier;
@@ -113,10 +126,11 @@ public class Car
 	 * @param y The position of the car on the y axis
 	 * @param v The initial velocity
 	 */
-	public Car( Float x, Float y, Float v )
+	public Car( Float x, Float y, Float v, Float dv )
 	{
 		position = new Coordinate( x, y );
 		velocity = v;
+		desiredVelocity = dv;
 		image = new CarGUI(position, 20, 20);
 	}
 	

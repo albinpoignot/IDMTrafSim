@@ -12,6 +12,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferStrategy;
+import java.util.concurrent.Semaphore;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -23,7 +24,9 @@ import trafsim.trafsim.Car;
 import trafsim.trafsim.Coordinate;
 import trafsim.trafsim.IDM;
 import trafsim.trafsim.ListCar;
+import trafsim.trafsim.ListTrafficLight;
 import trafsim.trafsim.Road;
+import trafsim.trafsim.TrafficLight;
 import trafsim.gui.RoadGUI;
 
 /**
@@ -41,8 +44,15 @@ public class Application extends JFrame implements ActionListener {
 	private JFrame frame;
 	private Timer timer;
 	private ListCar cl;
+	private ListTrafficLight tl;
 	private Road street;
+	private final Semaphore sem = new Semaphore( 1, true); 
 	
+	public Semaphore getSem() {
+		return sem;
+	}
+
+
 	public Application() {
 		
 		// Init frame
@@ -60,10 +70,11 @@ public class Application extends JFrame implements ActionListener {
 		cl = new ListCar();
 		street = new Road(new Coordinate(10f, 30f), 65, 1000, 25);
 		
-		cl.add(new Car( 12f, 66f, 0f ) );
-		cl.add(new Car( 32f, 66f, 5f ) );
-		cl.add(new Car( 52f, 66f, 3f ) );
-		cl.add(new Car( 84f, 66f, 12f ) );
+		cl.add(new Car( 12f, 66f, 0f, 36f ) );
+		cl.add(new Car( 32f, 66f, 5f, 36f ) );
+		//cl.add(new Car( 52f, 66f, 3f, 36f ) );
+		//cl.add(new Car( 84f, 66f, 8f, 36f ) );
+		//cl.add(new Car( 100f, 66f, 5f, 36f ) );
 		
 		street.setCarList(cl);
 		
@@ -72,20 +83,31 @@ public class Application extends JFrame implements ActionListener {
 		
 		this.createBufferStrategy(2);
 		
-		Timer timer = new Timer( 50, this );
+		this.timer = new Timer( 50, this );
 		timer.setInitialDelay(0);
 		timer.start();
 		
+		tl = new ListTrafficLight();
+		tl.add( new TrafficLight( new Coordinate( 300f, 80f), cl, sem ) );
+		tl.add( new TrafficLight( new Coordinate( 600f, 80f), cl, sem ) );
+		tl.add( new TrafficLight( new Coordinate( 800f, 80f), cl, sem ) );
 	}
+	
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) 
 	{
 		//System.out.println("Vitesse avant : " + cl.get(0).getVelocity() + " || Position avant (x) : " + cl.get(0).getPosition().getX());
-		
-		IDM.updateCarsVelocity( this.cl );
-		IDM.updateCarsPosition( this.cl );
-		
+			
+			try {
+				sem.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			IDM.updateCarsVelocity( this.cl );
+			IDM.updateCarsPosition( this.cl );
+			sem.release();
 		//System.out.println("Vitesse apres : " + cl.get(0).getVelocity() + " || Position après (x) : " + cl.get(0).getPosition().getX() );
 		
 		this.repaint();
