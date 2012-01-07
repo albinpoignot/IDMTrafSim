@@ -7,17 +7,17 @@
  */
 package trafsim.gui;
 
-import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.RepaintManager;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
-import javax.swing.border.EmptyBorder;
 
 import trafsim.trafsim.Car;
 import trafsim.trafsim.Coordinate;
@@ -56,18 +56,19 @@ public class Application extends JFrame implements ActionListener {
 		cl = new ListCar();
 		street = new Road(new Coordinate(10f, 30f), 65, 1000, 25);
 		
-		cl.add(0, new Car( 64f, 66f, 12f ) );
-		cl.add(1, new Car( 12f, 66f, 5f ) );
-		cl.add(2, new Car( 32f, 66f, 0f ) );
-		
+		cl.add(new Car( 12f, 66f, 0f ) );
+		cl.add(new Car( 32f, 66f, 5f ) );
+		cl.add(new Car( 52f, 66f, 3f ) );
+		cl.add(new Car( 84f, 66f, 12f ) );
 		
 		street.setCarList(cl);
 		
-
 		this.repaint();
 		this.setVisible(true);
 		
-		Timer timer = new Timer( 20, this);
+		this.createBufferStrategy(2);
+		
+		Timer timer = new Timer( 50, this );
 		timer.setInitialDelay(0);
 		timer.start();
 		
@@ -89,15 +90,63 @@ public class Application extends JFrame implements ActionListener {
 		this.repaint();
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.awt.Container#paint(java.awt.Graphics)
+	 */
 	@Override
 	public void paint(Graphics g) {
-		super.paint(g);
+		/*super.paint(g);
 		
 		street.getImage().paint(g);
 		
 		for (Car car : cl) {
 			car.getImage().paint(g);
+		}*/
+		
+		update(g);
+		
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see javax.swing.JFrame#update(java.awt.Graphics)
+	 * @see <a href="http://content.gpwiki.org/index.php/Java:Tutorials:Double_Buffering">Game Programing Wiki</a>
+	 */
+	@Override
+	public void update(Graphics g) {
+		
+		
+		BufferStrategy bf = this.getBufferStrategy();
+	 
+		//System.out.println(bf.toString());
+		
+		try {
+			g = bf.getDrawGraphics();
+			
+			street.getImage().paint(g);
+			
+			for (Car car : cl) {
+				car.getImage().paint(g);
+			}
+			
 		}
+		catch (Exception e) {
+			// Do nothing
+		} finally {
+			// It is best to dispose() a Graphics object when done with it.
+			g.dispose();
+		}
+	 
+		if(bf != null)
+		{
+			// Shows the contents of the backbuffer on the screen.
+			bf.show();
+		}
+	 
+        //Tell the System to do the Drawing now, otherwise it can take a few extra ms until 
+        //Drawing is done which looks very jerky
+        Toolkit.getDefaultToolkit().sync();
+	
 	}
 
 	/**
