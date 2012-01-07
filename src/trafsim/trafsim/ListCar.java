@@ -47,7 +47,7 @@ public class ListCar extends ArrayList<Car> {
 		 * return inFront;  
 		 */
 		
-		return this.get(this.indexOf(theCar));
+		return this.get(this.indexOf(theCar)+1);
 	}
 	
 	/**

@@ -13,11 +13,11 @@ public class IDM
 	/**
 	 * Desired velocity for all cars.
 	 */
-	private static Float desiredVelocity = new Float(12);
+	private static Float desiredVelocity = new Float(36);
 	/**
 	 * Minimum spacing between all cars.
 	 */
-	private static Float minimumSpacing = new Float(2);
+	private static Float minimumSpacing = new Float(1);
 	/**
 	 * Time headway between all cars.
 	 */
@@ -70,14 +70,16 @@ public class IDM
 			
 			term1 = (float) Math.pow(car.getVelocity() / IDM.desiredVelocity, delta);  // Delta et non 2
 
-			if( carList.size() > 1 && carList.lastIndexOf(car) != (carList.size()-1) ) // Other case, voir si besoin d'un autre pour high approaching rate
+			if( carList.lastIndexOf(car) != (carList.size()-1)  ) // Other case, voir si besoin d'un autre pour high approaching rate
 			{
 				term2 = car.getVelocity() - carList.getNext(car).getVelocity();
 				term3 = (float) (car.getVelocity() * term2 / ( 2 * Math.sqrt(IDM.acceleration * IDM.brakingDeceleration)));
 				term4 = IDM.minimumSpacing + car.getVelocity() * IDM.timeHeadway + term3;
-				term5 = (float) Math.abs( carList.getNext(car).getPosition().getX() - car.getPosition().getX() - 50);
+				term5 = (float) carList.getNext(car).getPosition().getX() - car.getPosition().getX() - 10;
 				term6 = (float) Math.pow(term4 / term5, 2);
 				vpoint = IDM.acceleration * ( 1 - term1 - term6 ) + car.getVelocity();
+				
+				//System.out.println( "Vitesse apres : " + car.getVelocity() + " . " + carList.getNext(car).getPosition().getX() + "." + car.getPosition().getX()  );
 			}
 			else // Free road Behaviour 1 car or first car 
 			{
@@ -103,7 +105,7 @@ public class IDM
 			
 			// TODO Remove the debug line...
 			//System.out.println("   1--> " + (car.getPosition().getX() ));// + 10) / 50);
-			Coordinate nPos = new Coordinate( car.getPosition().getX() + (car.getVelocity() / 50), car.getPosition().getY()); // Debug
+			Coordinate nPos = new Coordinate( car.getPosition().getX() + (car.getVelocity() / 20), car.getPosition().getY()); // Debug
 			//Coordinate nPos = new Coordinate(car.getPosition().getX() + car.getVelocity(), car.getPosition().getY()); // Prod
 			car.setPosition(nPos);
 			//System.out.println("   2--> " + (car.getPosition().getX() ));// + 10) / 50);

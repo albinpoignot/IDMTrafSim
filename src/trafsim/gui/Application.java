@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.RepaintManager;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
@@ -49,6 +50,10 @@ public class Application extends JFrame implements ActionListener {
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.setSize(1100, 600);
 		
+		this.setIgnoreRepaint(true);
+		RepaintManager currentManager = 
+			  RepaintManager.currentManager(this);
+			currentManager.setDoubleBufferingEnabled(false);
 		
 		/**************************
 		 * TEST & DEBUG
@@ -56,18 +61,17 @@ public class Application extends JFrame implements ActionListener {
 		cl = new ListCar();
 		street = new Road(new Coordinate(10f, 30f), 65, 1000, 25);
 		
-		cl.add(0, new Car( 64f, 66f, 12f ) );
-		cl.add(1, new Car( 12f, 66f, 5f ) );
-		cl.add(2, new Car( 32f, 66f, 0f ) );
+		cl.add( new Car( 12f, 66f, 5f ) );  
+		cl.add( new Car( 32f, 66f, 0f ) );  
+		cl.add( new Car( 64f, 66f, 12f ) ); 
 		
 		
 		street.setCarList(cl);
-		
-
+	
 		this.repaint();
 		this.setVisible(true);
 		
-		Timer timer = new Timer( 20, this);
+		Timer timer = new Timer( 50, this);
 		timer.setInitialDelay(0);
 		timer.start();
 		
@@ -80,9 +84,6 @@ public class Application extends JFrame implements ActionListener {
 		
 		IDM.updateCarsVelocity( this.cl );
 		IDM.updateCarsPosition( this.cl );
-		//this.cl.paintAllCars();
-		//street.getImage().repaint();
-		//frame.pack();
 		
 		//System.out.println("Vitesse apres : " + cl.get(0).getVelocity() + " || Position après (x) : " + cl.get(0).getPosition().getX() );
 		
@@ -90,15 +91,18 @@ public class Application extends JFrame implements ActionListener {
 	}
 	
 	@Override
-	public void paint(Graphics g) {
+	public void paint(Graphics g) 
+	{
 		super.paint(g);
-		
 		street.getImage().paint(g);
 		
-		for (Car car : cl) {
+		for (Car car : cl)
+		{
 			car.getImage().paint(g);
 		}
+		g.dispose();
 	}
+		
 
 	/**
 	 * @param args
