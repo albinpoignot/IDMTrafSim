@@ -11,6 +11,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
+import java.util.Random;
 
 import trafsim.trafsim.Coordinate;
 
@@ -24,6 +25,7 @@ public class CarGUI extends Canvas {
 	private Coordinate position;
 	private Integer height;
 	private Integer width;
+	private Color color;
 	
 	/**
 	 * Default constructor
@@ -33,6 +35,8 @@ public class CarGUI extends Canvas {
 		// Init some properties of the draw
 		setSize(width, height); 
 		setBackground(Color.RED);
+		
+		
 		
 	}
 	
@@ -52,6 +56,13 @@ public class CarGUI extends Canvas {
 		// Init some properties of the draw
 		setSize(width, height); 
 		setBackground(Color.RED);
+		
+		Random randomGenerator = new Random();
+		int red = randomGenerator.nextInt(255);
+		int green = randomGenerator.nextInt(255);
+		int blue = randomGenerator.nextInt(255);
+
+		color = new Color(red,green,blue);
 	}
 
 	
@@ -89,11 +100,22 @@ public class CarGUI extends Canvas {
 	@Override
 	public void paint(Graphics g) {
 		
-		g.setColor(Color.RED);
+		update(g);
+		/*g.setColor(Color.RED);
+		//System.out.println("     Position in the CarGUI : " + position.getX());
+		//g.drawRect( Math.round(position.getX()), Math.round(position.getY()), 10, 10 );
+		g.fillRect( Math.round(position.getX()), Math.round(position.getY()), 10, 10 );*/
+		
+	} 
+	
+	@Override
+	public void update(Graphics g) {
+
+		g.setColor(color);
+		//g.setColor(Color.RED);
 		//System.out.println("     Position in the CarGUI : " + position.getX());
 		//g.drawRect( Math.round(position.getX()), Math.round(position.getY()), 10, 10 );
 		g.fillRect( Math.round(position.getX()), Math.round(position.getY()), 10, 10 );
-		
-	} 
+	}
 
 }

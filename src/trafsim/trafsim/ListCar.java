@@ -40,14 +40,18 @@ public class ListCar extends ArrayList<Car> {
 	 * @return The Car in front of "theCar" on the road
 	 */
 	public Car getNext(Car theCar) {
-		/*
-		 * LONG VERSION ---
-		 * Integer index = this.indexOf(theCar);
-		 * Car inFront = this.get(index - 1);
-		 * return inFront;  
-		 */
+
+		Integer index = this.indexOf(theCar);
 		
-		return this.get(this.indexOf(theCar)+1);
+		if(index < this.size())
+		{
+			return this.get(index + 1);
+		}
+		else
+		{
+			return null;
+		}
+		//return this.get(this.indexOf(theCar));
 	}
 	
 	/**
