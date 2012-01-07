@@ -72,22 +72,30 @@ public class IDM
 				
 				term1 = (float) Math.pow(car.getVelocity() / car.getDesiredVelocity(), delta);  // Delta et non 2
 	
-				if( carList.lastIndexOf(car) != (carList.size()-1)  ) // Other case, voir si besoin d'un autre pour high approaching rate
+				if( carList.lastIndexOf(car) != (carList.size()-1)  ) // Formule generale
 				{
-					term2 = Math.abs( car.getVelocity() - carList.getNext(car).getVelocity() );
-					// Le term2 est celui qui fait tout partir en couille quand on rajoute les feux, la valeur aboslue donne un resultat mais non probant
-					term3 = (float) (car.getVelocity() * term2 / ( 2 * Math.sqrt(IDM.acceleration * IDM.brakingDeceleration)));
-					term4 = IDM.minimumSpacing + car.getVelocity() * IDM.timeHeadway + term3;
-					term5 = (float) carList.getNext(car).getPosition().getX() - car.getPosition().getX() - 10;
-					term6 = (float) Math.pow(term4 / term5, 2);
-					vpoint = IDM.acceleration * ( 1 - term1 - term6 ) + car.getVelocity();
-					
-					if( vpoint < 0 )
+					/*if( car.getVelocity() * 2 <= carList.getNext(car).getVelocity() ) //High approaching rate (2*)
 					{
-						System.out.println("Voiture nouvelle vitesse " + vpoint + " " + term2 + " " + term3 + " " + term4 + " " + term5 + " " + term6);
+						term2 = (float)( -1 * Math.pow( car.getVelocity() * ( car.getVelocity() - carList.getNext(car).getVelocity() ), 2 ) );
+						term3 = 4 * IDM.brakingDeceleration * (float) (carList.getNext(car).getPosition().getX() - car.getPosition().getX() - 10);
+						vpoint = term2 / term3;
 					}
-					
-					//System.out.println( "Vitesse apres : " + car.getVelocity() + " . " + carList.getNext(car).getPosition().getX() + "." + car.getPosition().getX()  );
+					else*/
+					if(true)
+					{
+						System.out.println("velo " + carList.getNext(car).getVelocity() );
+						term2 = car.getVelocity() - carList.getNext(car).getVelocity() ;
+						term3 = (float) ((car.getVelocity() * term2) / ( 2 * Math.sqrt(IDM.acceleration * IDM.brakingDeceleration)));
+						term4 = IDM.minimumSpacing + car.getVelocity() * IDM.timeHeadway + term3;
+						term5 = (float) carList.getNext(car).getPosition().getX() - car.getPosition().getX() - 10;
+						term6 = (float) Math.pow(term4 / term5, 2);
+						vpoint = IDM.acceleration * ( 1 - term1 - term6 ) + car.getVelocity();
+						
+						if( vpoint < 0 )
+						{
+							//System.out.println("Voiture nouvelle vitesse " + vpoint + " " + term4 + " " + term5 );
+						}
+					}
 				}
 				else // Free road Behaviour 1 car or first car 
 				{

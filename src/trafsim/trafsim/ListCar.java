@@ -54,6 +54,14 @@ public class ListCar extends ArrayList<Car> {
 		//return this.get(this.indexOf(theCar));
 	}
 	
+	public void display()
+	{
+		for( int i = 0; i < this.size(); i++ )
+		{
+			System.out.println("Voiture n°" + i + " velocité max = " + this.get(i).getDesiredVelocity() ); 
+		}
+	}
+	
 	/**
 	 * @deprecated
 	 */

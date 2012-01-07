@@ -83,7 +83,6 @@ public class TrafficLight implements ActionListener
 	private void insererFeu() throws Exception 
 	{
 		sem.acquire(); 
-		//System.out.println("Insertion feu - DEBUT");
 		int index = 0;
 		
 		for( int i = 0; i < cl.size(); i ++ )
@@ -93,25 +92,20 @@ public class TrafficLight implements ActionListener
 				index++;
 			}
 		}
-		//System.out.println("Je rajoute le feu à l'index : " + index );
 		cl.add(index, this.car );
-		//System.out.println("Insertion feu - FIN");
 		sem.release();
 	}
 	
 	private void enleverFeu() throws Exception
 	{
 		this.sem.acquire();
-		//System.out.println("Enleve feu - DEBUT");
 		for( int i = 0; i < cl.size(); i ++ )
 		{
 			if( cl.get(i) == car )
 			{
-				//System.out.println("J'enelve le feu à l'index : " + i );
 				cl.remove(i);
 			}
 		}
-		//System.out.println("Enleve feu - FIN");
 		this.sem.release();
 	}
 
@@ -120,7 +114,6 @@ public class TrafficLight implements ActionListener
 	{
 		if( arg0.getSource() == this.timerR )
 		{
-			//System.out.println( "Feu rouge fin ");
 			timerR.stop();
 			timerG.start();
 			try {
@@ -132,13 +125,11 @@ public class TrafficLight implements ActionListener
 		}
 		else if( arg0.getSource() == this.timerS )
 		{
-			//System.out.println( "Switch fin ");
 			timerS.stop();
 			timerR.start();
 		}
 		else if(arg0.getSource() == this.timerG )
 		{
-			//System.out.println( "Feu vert fin ");
 			timerG.stop();
 			try {
 				insererFeu();

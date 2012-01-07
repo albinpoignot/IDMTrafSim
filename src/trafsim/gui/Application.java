@@ -70,11 +70,11 @@ public class Application extends JFrame implements ActionListener {
 		cl = new ListCar();
 		street = new Road(new Coordinate(10f, 30f), 65, 1000, 25);
 		
-		cl.add(new Car( 12f, 66f, 0f, 36f ) );
-		cl.add(new Car( 32f, 66f, 5f, 36f ) );
-		//cl.add(new Car( 52f, 66f, 3f, 36f ) );
-		//cl.add(new Car( 84f, 66f, 8f, 36f ) );
-		//cl.add(new Car( 100f, 66f, 5f, 36f ) );
+		cl.add(new Car( 12f, 66f, 0f, 15f ) );
+		cl.add(new Car( 32f, 66f, 5f, 15f ) );
+		cl.add(new Car( 52f, 66f, 3f, 15f ) );
+		cl.add(new Car( 84f, 66f, 8f, 15f ) );
+		cl.add(new Car( 100f, 66f, 5f, 15f ) );
 		
 		street.setCarList(cl);
 		
@@ -90,7 +90,7 @@ public class Application extends JFrame implements ActionListener {
 		tl = new ListTrafficLight();
 		tl.add( new TrafficLight( new Coordinate( 300f, 80f), cl, sem ) );
 		tl.add( new TrafficLight( new Coordinate( 600f, 80f), cl, sem ) );
-		//tl.add( new TrafficLight( new Coordinate( 800f, 80f), cl, sem ) );
+		tl.add( new TrafficLight( new Coordinate( 800f, 80f), cl, sem ) );
 	}
 	
 	
