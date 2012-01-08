@@ -10,7 +10,6 @@ package trafsim.gui;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.GraphicsConfiguration;
 import java.util.Random;
 
 import trafsim.trafsim.Coordinate;
@@ -22,26 +21,33 @@ import trafsim.trafsim.Coordinate;
 public class CarGUI extends Canvas {
 
 	
+	/**
+	 * Used in case of serialization. Useless here.
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * Position of the car
+	 */
 	private Coordinate position;
+	
+	/**
+	 * Height of the car
+	 */
 	private Integer height;
+	
+	/**
+	 * Width of the car
+	 */
 	private Integer width;
+	
+	/**
+	 * Color of the car
+	 */
 	private Color color;
 	
 	/**
-	 * Default constructor
-	 */
-	public CarGUI() {
-		
-		// Init some properties of the draw
-		setSize(width, height); 
-		setBackground(Color.RED);
-		
-		
-		
-	}
-	
-	/**
-	 * Overload constructor to initialize attributes
+	 * Overload constructor to initialize attributes. The color is set to a random one.
 	 * @param position Initial position of the car
 	 * @param height Height of the car
 	 * @param width Width of the car
@@ -54,8 +60,8 @@ public class CarGUI extends Canvas {
 		this.width = width;
 		
 		// Init some properties of the draw
-		setSize(width, height); 
-		setBackground(Color.RED);
+		setSize(this.width, this.height); 
+		//setBackground(Color.RED);
 		
 		Random randomGenerator = new Random();
 		int red = randomGenerator.nextInt(255);
@@ -94,8 +100,8 @@ public class CarGUI extends Canvas {
 		this.position = position;
 	}
 
-	/**
-	 * Draw all the car in the carList attribute
+	/* (non-javadoc)
+	 * @see java.awt.Container#paint(java.awt.Graphics)
 	 */
 	@Override
 	public void paint(Graphics g) {
@@ -108,6 +114,10 @@ public class CarGUI extends Canvas {
 		
 	} 
 	
+	/**
+	 * Draw the car.
+	 * @see javax.swing.JFrame#update(java.awt.Graphics)
+	 */
 	@Override
 	public void update(Graphics g) {
 

@@ -15,7 +15,6 @@ import java.awt.image.BufferStrategy;
 import java.util.concurrent.Semaphore;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.RepaintManager;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
@@ -27,7 +26,6 @@ import trafsim.trafsim.ListCar;
 import trafsim.trafsim.ListTrafficLight;
 import trafsim.trafsim.Road;
 import trafsim.trafsim.TrafficLight;
-import trafsim.gui.RoadGUI;
 
 /**
  * No description
@@ -36,16 +34,36 @@ import trafsim.gui.RoadGUI;
 public class Application extends JFrame implements ActionListener {
 
 	/**
-	 * @serialField
+	 * Used in case of serialization. Useless here.
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private JPanel panel;
-	private JFrame frame;
+	/*private JPanel panel;
+	private JFrame frame;*/
+	
+	/**
+	 * Timer for repainting.
+	 */
 	private Timer timer;
-	private ListCar cl;
-	private ListTrafficLight tl;
+	
+	/**
+	 * List of cars
+	 */
+	private ListCar carsList;
+	
+	/**
+	 * List of traffic lights
+	 */
+	private ListTrafficLight trafficLightsList;
+	
+	/**
+	 * A street in the system
+	 */
 	private Road street;
+	
+	/**
+	 * A semaphore.
+	 */
 	private final Semaphore sem = new Semaphore( 1, false); 
 	
 	public Semaphore getSem() {
@@ -53,6 +71,9 @@ public class Application extends JFrame implements ActionListener {
 	}
 
 
+	/**
+	 * Default constructor. Create the graphic interface automatically, add cars and traffic lights and launch the system.
+	 */
 	public Application() {
 		
 		// Init frame
@@ -60,23 +81,29 @@ public class Application extends JFrame implements ActionListener {
 		this.setSize(1100, 600);
 		
 		this.setIgnoreRepaint(true);
-		RepaintManager currentManager = 
-			  RepaintManager.currentManager(this);
-			currentManager.setDoubleBufferingEnabled(false);
+		RepaintManager currentManager = RepaintManager.currentManager(this);
+		currentManager.setDoubleBufferingEnabled(false);
 		
 		/**************************
 		 * TEST & DEBUG
 		 **************************/
-		cl = new ListCar();
+		carsList = new ListCar();
 		street = new Road(new Coordinate(10f, 30f), 65, 1000, 25);
 		
-		cl.add(new Car( 12f, 66f, 0f, 15f ) );
-		cl.add(new Car( 32f, 66f, 5f, 15f ) );
-		cl.add(new Car( 52f, 66f, 3f, 15f ) );
-		cl.add(new Car( 84f, 66f, 8f, 15f ) );
-		cl.add(new Car( 100f, 66f, 5f, 15f ) );
+		/* 5 cars + 3 traffic lights. No special behavior (such as high approaching rate) */
+		carsList.add(new Car( 12f, 66f, 0f, 15f ) ); // Add in cl[0]
+		carsList.add(new Car( 32f, 66f, 5f, 15f ) ); // Add in cl[1]
+		carsList.add(new Car( 52f, 66f, 3f, 15f ) ); // Add in cl[2]
+		carsList.add(new Car( 84f, 66f, 8f, 15f ) ); // Add in cl[3]
+		carsList.add(new Car( 100f, 66f, 5f, 15f ) ); // Add in cl[4]
+
+
+		trafficLightsList = new ListTrafficLight();
+		trafficLightsList.add( new TrafficLight( new Coordinate( 300f, 80f), carsList, sem ) );
+		trafficLightsList.add( new TrafficLight( new Coordinate( 600f, 80f), carsList, sem ) );
+		trafficLightsList.add( new TrafficLight( new Coordinate( 800f, 80f), carsList, sem ) );
 		
-		street.setCarList(cl);
+		street.setCarList(carsList);
 		
 		this.repaint();
 		this.setVisible(true);
@@ -86,14 +113,12 @@ public class Application extends JFrame implements ActionListener {
 		this.timer = new Timer( 50, this );
 		timer.setInitialDelay(0);
 		timer.start();
-		
-		tl = new ListTrafficLight();
-		tl.add( new TrafficLight( new Coordinate( 300f, 80f), cl, sem ) );
-		tl.add( new TrafficLight( new Coordinate( 600f, 80f), cl, sem ) );
-		tl.add( new TrafficLight( new Coordinate( 800f, 80f), cl, sem ) );
+
 	}
 	
-	
+	/**
+	 * Automatically called by a Timer. Updates the cars's velocities, release semaphores then repaint the GUI.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent arg0) 
 	{
@@ -105,10 +130,10 @@ public class Application extends JFrame implements ActionListener {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			//System.out.println("Update velocité et position - Debut");
-			IDM.updateCarsVelocity( this.cl );
-			IDM.updateCarsPosition( this.cl );
-			//System.out.println("Update velocité et position - FIN");
+			//System.out.println("Update velocitï¿½ et position - Debut");
+			IDM.updateCarsVelocity( this.carsList );
+			IDM.updateCarsPosition( this.carsList );
+			//System.out.println("Update velocitï¿½ et position - FIN");
 			sem.release();
 		//System.out.println("Vitesse apres : " + cl.get(0).getVelocity() + " || Position aprÃ¨s (x) : " + cl.get(0).getPosition().getX() );
 		
@@ -121,7 +146,7 @@ public class Application extends JFrame implements ActionListener {
 	@Override
 	public void paint(Graphics g) 
 	{
-		super.paint(g);
+		//super.paint(g);
 
 		/*
 		street.getImage().paint(g);
@@ -153,7 +178,7 @@ public class Application extends JFrame implements ActionListener {
 			
 			street.getImage().paint(g);
 			
-			for (Car car : cl) {
+			for (Car car : carsList) {
 				car.getImage().paint(g);
 			}
 			
@@ -178,6 +203,7 @@ public class Application extends JFrame implements ActionListener {
 		
 
 	/**
+	 * Should not be called !
 	 * @param args
 	 */
 	public static void main(String[] args) {

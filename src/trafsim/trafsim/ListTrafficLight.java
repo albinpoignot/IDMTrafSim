@@ -23,6 +23,7 @@ public class ListTrafficLight extends ArrayList<TrafficLight> {
 	 * Constructor
 	 */
 	public ListTrafficLight() {
+		super();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -35,9 +36,10 @@ public class ListTrafficLight extends ArrayList<TrafficLight> {
 	}
 	
 	/**
-	 * Return the TrafficLight in front of the TrafficLight given
+	 * Returns the TrafficLight in front of the TrafficLight given
 	 * @param theTrafficLight The TrafficLight you want to know the next
 	 * @return The TrafficLight in front of "theTrafficLight" on the road
+	 * @deprecated
 	 */
 	public TrafficLight getNext(TrafficLight theTrafficLight) {
 
@@ -55,13 +57,14 @@ public class ListTrafficLight extends ArrayList<TrafficLight> {
 	}
 	
 	/**
+	 * Do nothing
 	 * @deprecated
 	 */
 	public void paintAllTrafficLights() {
 		
-		for (TrafficLight TrafficLight : this) {
+		/*for (TrafficLight TrafficLight : this) {
 			//TrafficLight.paint();
-		}
+		}*/
 		
 	}
 }

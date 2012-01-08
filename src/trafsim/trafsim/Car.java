@@ -2,11 +2,6 @@ package trafsim.trafsim;
 
 import trafsim.gui.CarGUI;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.GraphicsConfiguration;
-
 
 /**
  * Representation of a car in the system
@@ -17,11 +12,6 @@ import java.awt.GraphicsConfiguration;
 
 public class Car
 {	
-	/**
-	 * @serialField
-	 */
-	private static final long serialVersionUID = 1L;
-	
 	/**
 	 * Desired velocity for all cars.
 	 */
@@ -125,6 +115,7 @@ public class Car
 	 * @param x The position of the car on the x axis
 	 * @param y The position of the car on the y axis
 	 * @param v The initial velocity
+	 * @param dv Desired velocity
 	 */
 	public Car( Float x, Float y, Float v, Float dv )
 	{

@@ -35,9 +35,9 @@ public class ListCar extends ArrayList<Car> {
 	}
 	
 	/**
-	 * Return the car in front of the car given
+	 * Return the car in front of the given car
 	 * @param theCar The car you want to know the next
-	 * @return The Car in front of "theCar" on the road
+	 * @return The Car in front of "theCar" on the road or null if there is no car in front
 	 */
 	public Car getNext(Car theCar) {
 
@@ -51,14 +51,17 @@ public class ListCar extends ArrayList<Car> {
 		{
 			return null;
 		}
-		//return this.get(this.indexOf(theCar));
 	}
 	
+	/**
+	 * Display debug informations on the console : <br />
+	 * "Car #x, velocity max = y"
+	 */
 	public void display()
 	{
 		for( int i = 0; i < this.size(); i++ )
 		{
-			System.out.println("Voiture n°" + i + " velocité max = " + this.get(i).getDesiredVelocity() ); 
+			System.out.println("Car #" + i + ", velocity max = " + this.get(i).getDesiredVelocity() ); 
 		}
 	}
 	

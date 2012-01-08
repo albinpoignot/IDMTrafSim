@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.Semaphore;
 
-import javax.swing.JFrame;
 import javax.swing.Timer;
 
 /**
@@ -28,7 +27,7 @@ public class TrafficLight implements ActionListener
 	/**
 	 * List Car
 	 */
-	private ListCar cl;
+	private ListCar carList;
 	
 	/**
 	 * Duration of the green light
@@ -43,101 +42,125 @@ public class TrafficLight implements ActionListener
 	/**
 	 * Duration of switching between green and red
 	 */
-	private static Integer switchGap = 2000 ;
+	private static Integer switchGap = 2000;
 	
-	private Timer timerR;
-	private Timer timerG;
-	private Timer timerS;
+	/**
+	 * Waiting timer when traffic light is red
+	 */
+	private Timer timerRed;
+	
+	/**
+	 * Waiting timer when traffic light is green
+	 */
+	private Timer timerGreen;
+	
+	/**
+	 * Waiting timer for the switch from Green to Red
+	 */
+	private Timer timerSwitch;
 	private final Semaphore sem;
 	
 	/**
-	 * Default constructor
+	 * Overload constructor. Set the position, the carList and the semaphore attributes. Then automatically set the Timers to default values.
 	 * @param position The position of traffic lights
 	 */
 	
 	public TrafficLight(Coordinate position, ListCar cl, Semaphore sem ) 
 	{
 		this.position = position;
-		this.cl = cl;	
+		this.carList = cl;	
 		this.car = new Car( position.getX(), position.getY(), 0f, 0f );
 		this.sem = sem;
 		
 		try {
-			insererFeu();
+			insertTrafficLight();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		this.timerR = new Timer( redGap, this );
-		this.timerR.setInitialDelay( redGap );
-		this.timerR.start();
+		this.timerRed = new Timer( redGap, this );
+		this.timerRed.setInitialDelay( redGap );
+		this.timerRed.start();
 		
-		this.timerG = new Timer( greenGap, this );
-		this.timerG.setInitialDelay(greenGap);
+		this.timerGreen = new Timer( greenGap, this );
+		this.timerGreen.setInitialDelay(greenGap);
 		
-		this.timerS = new Timer( switchGap, this );
-		this.timerS.setInitialDelay(switchGap);
+		this.timerSwitch = new Timer( switchGap, this );
+		this.timerSwitch.setInitialDelay(switchGap);
 	}
 	
-	private void insererFeu() throws Exception 
+	//private void insererFeu() throws Exception
+	/**
+	 * Inserts the TrafficLight to the correct position in its carList property
+	 * @throws Exception Throws an exception when the traffic light can't be inserted in the carList
+	 */
+	private void insertTrafficLight() throws Exception 
 	{
 		sem.acquire(); 
 		int index = 0;
 		
-		for( int i = 0; i < cl.size(); i ++ )
+		for( int i = 0; i < carList.size(); i ++ )
 		{
-			if( cl.get(i).getPosition().getX() < this.position.getX() )
+			if( carList.get(i).getPosition().getX() < this.position.getX() )
 			{
 				index++;
 			}
 		}
-		cl.add(index, this.car );
+		carList.add(index, this.car );
 		sem.release();
 	}
 	
-	private void enleverFeu() throws Exception
+	/**
+	 * Removes the TrafficLight from its carList property
+	 * @throws Exception Throws an exception when the traffic light can't be removed from the carList
+	 */
+	private void removeTrafficLight() throws Exception
 	{
 		this.sem.acquire();
-		for( int i = 0; i < cl.size(); i ++ )
+		for( int i = 0; i < carList.size(); i ++ )
 		{
-			if( cl.get(i) == car )
+			if( carList.get(i) == car )
 			{
-				cl.remove(i);
+				carList.remove(i);
 			}
 		}
 		this.sem.release();
 	}
 
+	/**
+	 * Automatically called by a Timer. Insert or remove the TrafficLight in its carList when it's time to do it.<br />
+	 * <i>Process : wait redGap => become green => wait greenGap => wait switchGap => become red => start over</i>
+	 */
 	@Override
-	public void actionPerformed(ActionEvent arg0)  // Todo Changer graphisme
+	public void actionPerformed(ActionEvent arg0)  // TODO Changer graphisme
 	{
-		if( arg0.getSource() == this.timerR )
+		if( arg0.getSource() == this.timerRed )
 		{
-			timerR.stop();
-			timerG.start();
+			timerRed.stop();
+			timerGreen.start();
 			try {
-				enleverFeu();
+				removeTrafficLight();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		else if( arg0.getSource() == this.timerS )
+		else if( arg0.getSource() == this.timerSwitch )
 		{
-			timerS.stop();
-			timerR.start();
+			timerSwitch.stop();
+			timerRed.start();
 		}
-		else if(arg0.getSource() == this.timerG )
+		else if(arg0.getSource() == this.timerGreen )
 		{
-			timerG.stop();
+			timerGreen.stop();
 			try {
-				insererFeu();
+				insertTrafficLight();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			timerS.start();
+			timerSwitch.start();
 		}
 	}
 	

@@ -9,7 +9,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
 
-import trafsim.trafsim.Car;
 import trafsim.trafsim.Coordinate;
 import trafsim.trafsim.ListCar;
 
@@ -96,8 +95,8 @@ public class RoadGUI extends Canvas {
 		this.carList = carList;
 	}
 	
-	/**
-	 * Draw all the cars in the carList attribute
+	/* (non-javadoc)
+	 * @see java.awt.Container#paint(java.awt.Graphics)
 	 */
 	public void paint(Graphics g) {
 		
@@ -128,6 +127,10 @@ public class RoadGUI extends Canvas {
 
 	}
 	
+	/**
+	 * Draw the road.
+	 * @see javax.swing.JFrame#update(java.awt.Graphics)
+	 */
 	@Override
 	public void update(Graphics g) {
 		// Draw the road

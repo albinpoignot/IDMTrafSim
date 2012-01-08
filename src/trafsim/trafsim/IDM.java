@@ -52,43 +52,73 @@ public class IDM
 		 * 
 		 * Here :
 		 * 	term1 = (v/v0)^delta
-		 * 	term2 = Delta v_alpha = v_alpha - v_(alpha-1)	
-		 *  term3 = v * term2 / square_root(a * b)
-		 * 	term4 = [s_star(v, Delta v_alpha)] = s0 + v_alpha * T + ( [v * Delta v_alpha] / [square_root(a * b)] )
-		 * 	term5 = x_(alpha-1) - x_alpha - l_(alpha-1)
-		 * 	term6 = (term4 / term5)^2
+		 * 	delta_valpha = term2 = Delta v_alpha = v_alpha - v_(alpha-1)	
+		 *  term3 = (v * term2) / square_root(a * b) = (v * delta_valpha) / square_root(a * b) 
+		 * 	s_star = term4 = [s_star(v, Delta v_alpha)] = s0 + v_alpha * T + ( [v * Delta v_alpha] / [square_root(a * b)] )
+		 *      = s0 + v_alpha * T + term3
+		 * 	s_alpha = term5 = x_(alpha-1) - x_alpha - l_(alpha-1)
+		 * 	term6 = (term4 / term5)^2 =  (s_star / s_alpha) ^ 2
 		 * 	
 		 *  vpoint = acceleration * { 1 - term1 - term6 }
 		 */
 		
 		Float vpoint;
-		Float term1, term2, term3, term4, term5, term6;
+		Float term1, term3, term6;
+		Float delta_valpha, s_star, s_alpha;
 		
 		for (Car car : carList) {
 			
 			if( car.getDesiredVelocity() != 0 )
 			{
+				
 				// Calculate the new velocity of the current car
 				
-				term1 = (float) Math.pow(car.getVelocity() / car.getDesiredVelocity(), delta);  // Delta et non 2
+				term1 = (float) Math.pow(car.getVelocity() / car.getDesiredVelocity(), delta);
 	
-				if( carList.lastIndexOf(car) != (carList.size()-1)  ) // Formule generale
+				if( carList.lastIndexOf(car) != (carList.size()-1)  ) // General formula
 				{
-					/*if( car.getVelocity() * 2 <= carList.getNext(car).getVelocity() ) //High approaching rate (2*)
-					{
-						term2 = (float)( -1 * Math.pow( car.getVelocity() * ( car.getVelocity() - carList.getNext(car).getVelocity() ), 2 ) );
-						term3 = 4 * IDM.brakingDeceleration * (float) (carList.getNext(car).getPosition().getX() - car.getPosition().getX() - 10);
-						vpoint = term2 / term3;
+					
+					/*if( car.getVelocity() * 2 <= carList.getNext(car).getVelocity() ) //High approaching rate (2 * v_(alpha-1))				
+					{*/	
+						/*
+						 * Julien's version
+						 * term2 = (float)( -1 * Math.pow( car.getVelocity() * ( car.getVelocity() - carList.getNext(car).getVelocity() ), 2 ) );
+						 * term3 = 4 * IDM.brakingDeceleration * (float) Math.pow(carList.getNext(car).getPosition().getX() - car.getPosition().getX() - 10, 2);
+						 * vpoint = term2 / term3;
+						 */
+						
+						// S_STAR
+						/*delta_valpha = car.getVelocity() - carList.getNext(car).getVelocity() ;
+						term3 = (float) ((car.getVelocity() * delta_valpha) / (Math.sqrt(IDM.acceleration * IDM.brakingDeceleration)));
+						s_star = IDM.minimumSpacing + car.getVelocity() * IDM.timeHeadway + term3;
+						
+						// S_ALPHA
+						s_alpha = (float) carList.getNext(car).getPosition().getX() - car.getPosition().getX() - 10;
+						
+						// - A * ( S_STAR / S_ALPHA ) ^ 2
+						vpoint = (float) (-1 * IDM.acceleration * Math.pow(s_star/s_alpha, 2));
 					}
-					else*/
+					else // General case */
 					if(true)
 					{
-						System.out.println("velo " + carList.getNext(car).getVelocity() );
-						term2 = car.getVelocity() - carList.getNext(car).getVelocity() ;
+						System.out.println("velo " + carList.getNext(car).getVelocity() + "(index : " + carList.lastIndexOf(car) + ")" );
+						/*term2 = car.getVelocity() - carList.getNext(car).getVelocity() ;
 						term3 = (float) ((car.getVelocity() * term2) / ( 2 * Math.sqrt(IDM.acceleration * IDM.brakingDeceleration)));
 						term4 = IDM.minimumSpacing + car.getVelocity() * IDM.timeHeadway + term3;
 						term5 = (float) carList.getNext(car).getPosition().getX() - car.getPosition().getX() - 10;
 						term6 = (float) Math.pow(term4 / term5, 2);
+						vpoint = IDM.acceleration * ( 1 - term1 - term6 ) + car.getVelocity();*/
+						
+						delta_valpha = car.getVelocity() - carList.getNext(car).getVelocity() ;
+						
+						// 2 * square_root ??
+						term3 = (float) ((car.getVelocity() * delta_valpha) / ( 2 * Math.sqrt(IDM.acceleration * IDM.brakingDeceleration)));
+						s_star = IDM.minimumSpacing + car.getVelocity() * IDM.timeHeadway + term3;
+						
+						s_alpha = (float) carList.getNext(car).getPosition().getX() - car.getPosition().getX() - 10;
+						
+						term6 = (float) Math.pow(s_star / s_alpha, 2);
+						
 						vpoint = IDM.acceleration * ( 1 - term1 - term6 ) + car.getVelocity();
 						
 						if( vpoint < 0 )
@@ -97,7 +127,7 @@ public class IDM
 						}
 					}
 				}
-				else // Free road Behaviour 1 car or first car 
+				else // Free road behavior 1 car or first car 
 				{
 					vpoint = IDM.acceleration * ( 1 - term1 ) + car.getVelocity();
 				}
@@ -128,16 +158,16 @@ public class IDM
 		}
 	}
 	
-	/**
+	/* (non-javadoc)
 	 * NOT IMPLEMTED YET
 	 */
-	private static void updateSystem() {
+	/*private static void updateSystem() {
 		
 		// TODO Find correct arguments, and what to do here...
 		
-		/* 		1. For each road :
-		 *			1.1 IDM.updateCars(road)
-		 *		...
-		 */
-	}
+		// 		1. For each road :
+		//			1.1 IDM.updateCars(road)
+		//		...
+		 
+	}*/
 }

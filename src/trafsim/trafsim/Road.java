@@ -127,10 +127,10 @@ public class Road
 	
 	/**
 	 * Overload Constructor
-	 * @param position: Position
-	 * @param height : Height
-	 * @param width : Width
-	 * @param speedLimit : speed limit on the segment
+	 * @param position Position of the road
+	 * @param height Height of the road
+	 * @param width Width or the road
+	 * @param speedLimit speed limit on the segment
 	 */
 	public Road( Coordinate position, Integer height, Integer width, Integer speedLimit )
 	{
