@@ -7,6 +7,7 @@
  */
 package trafsim.gui;
 
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -15,6 +16,7 @@ import java.awt.image.BufferStrategy;
 import java.util.concurrent.Semaphore;
 
 import javax.swing.JFrame;
+import javax.swing.JTextField;
 import javax.swing.RepaintManager;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
@@ -69,6 +71,8 @@ public class Application extends JFrame implements ActionListener {
 	public Semaphore getSem() {
 		return sem;
 	}
+	
+	private JTextField textField;
 
 
 	/**
@@ -104,6 +108,15 @@ public class Application extends JFrame implements ActionListener {
 		trafficLightsList.add( new TrafficLight( new Coordinate( 800f, 80f), carsList, sem ) );
 		
 		street.setCarList(carsList);
+		
+		
+		textField = new JTextField(30);
+		//textField.setLocation(100, 90);
+		
+		//this.add(textField);
+		this.setLayout(new FlowLayout());
+		this.add(textField);
+		textField.setLocation(400, 200);
 		
 		this.repaint();
 		this.setVisible(true);
@@ -181,6 +194,8 @@ public class Application extends JFrame implements ActionListener {
 			for (Car car : carsList) {
 				car.getImage().paint(g);
 			}
+			
+			textField.paint(g);
 			
 		}
 		catch (Exception e) {
