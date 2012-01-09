@@ -101,7 +101,10 @@ public class IDM
 					else // General case */
 					if(true)
 					{
-						System.out.println("velo " + carList.getNext(car).getVelocity() + "(index : " + carList.lastIndexOf(car) + ")" );
+						//System.out.println("velo " + carList.getNext(car).getVelocity() + "(index : " + carList.lastIndexOf(car) + ")" );
+						
+						
+						
 						/*term2 = car.getVelocity() - carList.getNext(car).getVelocity() ;
 						term3 = (float) ((car.getVelocity() * term2) / ( 2 * Math.sqrt(IDM.acceleration * IDM.brakingDeceleration)));
 						term4 = IDM.minimumSpacing + car.getVelocity() * IDM.timeHeadway + term3;

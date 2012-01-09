@@ -33,44 +33,16 @@ import trafsim.trafsim.TrafficLight;
  * No description
  *
  */
-public class Application extends JFrame implements ActionListener {
+public class Application {
 
 	/**
 	 * Used in case of serialization. Useless here.
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	/*private JPanel panel;
-	private JFrame frame;*/
+	private RoadAreaGUI road;
 	
-	/**
-	 * Timer for repainting.
-	 */
-	private Timer timer;
-	
-	/**
-	 * List of cars
-	 */
-	private ListCar carsList;
-	
-	/**
-	 * List of traffic lights
-	 */
-	private ListTrafficLight trafficLightsList;
-	
-	/**
-	 * A street in the system
-	 */
-	private Road street;
-	
-	/**
-	 * A semaphore.
-	 */
-	private final Semaphore sem = new Semaphore( 1, false); 
-	
-	public Semaphore getSem() {
-		return sem;
-	}
+	private JFrame frame;
 	
 	private JTextField textField;
 
@@ -80,59 +52,48 @@ public class Application extends JFrame implements ActionListener {
 	 */
 	public Application() {
 		
+		frame = new JFrame("IDM Implementation");
+		
 		// Init frame
-		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		this.setSize(1100, 600);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		frame.setSize(1200, 600);
 		
-		this.setIgnoreRepaint(true);
-		RepaintManager currentManager = RepaintManager.currentManager(this);
-		currentManager.setDoubleBufferingEnabled(false);
-		
-		/**************************
-		 * TEST & DEBUG
-		 **************************/
-		carsList = new ListCar();
-		street = new Road(new Coordinate(10f, 30f), 65, 1000, 25);
-		
-		/* 5 cars + 3 traffic lights. No special behavior (such as high approaching rate) */
-		carsList.add(new Car( 12f, 66f, 0f, 15f ) ); // Add in cl[0]
-		carsList.add(new Car( 32f, 66f, 5f, 15f ) ); // Add in cl[1]
-		carsList.add(new Car( 52f, 66f, 3f, 15f ) ); // Add in cl[2]
-		carsList.add(new Car( 84f, 66f, 8f, 15f ) ); // Add in cl[3]
-		carsList.add(new Car( 100f, 66f, 5f, 15f ) ); // Add in cl[4]
-
-
-		trafficLightsList = new ListTrafficLight();
-		trafficLightsList.add( new TrafficLight( new Coordinate( 300f, 80f), carsList, sem ) );
-		trafficLightsList.add( new TrafficLight( new Coordinate( 600f, 80f), carsList, sem ) );
-		trafficLightsList.add( new TrafficLight( new Coordinate( 800f, 80f), carsList, sem ) );
-		
-		street.setCarList(carsList);
+		//this.setIgnoreRepaint(true);
 		
 		
-		textField = new JTextField(30);
+		//textField = new JTextField(30);
+		
+		road = new RoadAreaGUI();
+		
+		
 		//textField.setLocation(100, 90);
 		
 		//this.add(textField);
-		this.setLayout(new FlowLayout());
-		this.add(textField);
-		textField.setLocation(400, 200);
+		frame.setLayout(new FlowLayout());
+		frame.add(road);
 		
-		this.repaint();
-		this.setVisible(true);
+		road.repaint();
+		
+		frame.setVisible(true);
+		
+		/*this.add(textField);
+		textField.setLocation(400, 200);*/
+		
+		/*this.repaint();
+		
 		
 		this.createBufferStrategy(2);
 		
 		this.timer = new Timer( 50, this );
 		timer.setInitialDelay(0);
-		timer.start();
+		timer.start();*/
 
 	}
 	
 	/**
 	 * Automatically called by a Timer. Updates the cars's velocities, release semaphores then repaint the GUI.
 	 */
-	@Override
+	/*@Override
 	public void actionPerformed(ActionEvent arg0) 
 	{
 		//System.out.println("Vitesse avant : " + cl.get(0).getVelocity() + " || Position avant (x) : " + cl.get(0).getPosition().getX());
@@ -143,42 +104,45 @@ public class Application extends JFrame implements ActionListener {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			//System.out.println("Update velocit� et position - Debut");
+			//System.out.println("Update velocity and position - Debut");
 			IDM.updateCarsVelocity( this.carsList );
 			IDM.updateCarsPosition( this.carsList );
-			//System.out.println("Update velocit� et position - FIN");
+			//System.out.println("Update velocity and position - FIN");
 			sem.release();
 		//System.out.println("Vitesse apres : " + cl.get(0).getVelocity() + " || Position après (x) : " + cl.get(0).getPosition().getX() );
 		
 		this.repaint();
-	}
+	}*/
 	
 	/* (non-Javadoc)
 	 * @see java.awt.Container#paint(java.awt.Graphics)
 	 */
-	@Override
-	public void paint(Graphics g) 
+	/*@Override
+	public void paint(Graphics g)
 	{
 		//super.paint(g);
-
-		/*
-		street.getImage().paint(g);
 		
-		for (Car car : cl)
-		{
-			car.getImage().paint(g);
-		}*/
+		//street.getImage().paint(g);
+		
+		//for (Car car : cl)
+		//{
+			//car.getImage().paint(g);
+		//}
 		
 		update(g);
-		
-	}
+	}*/
 	
+	/*@Override
+	public void paintComponents(Graphics g)
+	{
+		update(g);
+	}*/
 	
 	/* (non-Javadoc)
 	 * @see javax.swing.JFrame#update(java.awt.Graphics)
 	 * @see <a href="http://content.gpwiki.org/index.php/Java:Tutorials:Double_Buffering">Game Programing Wiki</a>
 	 */
-	@Override
+	/*@Override
 	public void update(Graphics g) {
 		
 		
@@ -195,7 +159,8 @@ public class Application extends JFrame implements ActionListener {
 				car.getImage().paint(g);
 			}
 			
-			textField.paint(g);
+			//textField.paint(g);
+//			this.paintComponents(g);
 			
 		}
 		catch (Exception e) {
@@ -214,7 +179,7 @@ public class Application extends JFrame implements ActionListener {
         //Tell the System to do the Drawing now, otherwise it can take a few extra ms until 
         //Drawing is done which looks very jerky
         Toolkit.getDefaultToolkit().sync();
-	}
+	}*/
 		
 
 	/**
