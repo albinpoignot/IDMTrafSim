@@ -47,6 +47,22 @@ public class CarGUI extends Canvas {
 	private Color color;
 	
 	/**
+	 * @return the color
+	 */
+	public Color getColor() {
+		return color;
+	}
+
+
+	/**
+	 * @param color the color to set
+	 */
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+
+	/**
 	 * Overload constructor to initialize attributes. The color is set to a random one.
 	 * @param position Initial position of the car
 	 * @param height Height of the car

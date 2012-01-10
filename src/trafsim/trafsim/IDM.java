@@ -14,18 +14,22 @@ public class IDM
 	 * Desired velocity for all cars.
 	 */
 	//private static Float desiredVelocity = new Float(36);
+	
 	/**
 	 * Minimum spacing between all cars.
 	 */
 	private static Float minimumSpacing = new Float(1);
+	
 	/**
 	 * Time headway between all cars.
 	 */
 	private static Float timeHeadway = new Float(1.5);
+	
 	/**
 	 * Acceleration factor of all cars.
 	 */
 	private static Float acceleration = new Float(0.3);
+	
 	/**
 	 * Comfortable braking deceleration factor for all cars.
 	 */

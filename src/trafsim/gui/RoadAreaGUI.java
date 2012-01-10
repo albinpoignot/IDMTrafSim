@@ -9,21 +9,16 @@ package trafsim.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferStrategy;
 import java.util.concurrent.Semaphore;
 
 import javax.swing.BorderFactory;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.RepaintManager;
 import javax.swing.Timer;
-import javax.swing.WindowConstants;
 
 import trafsim.trafsim.Car;
 import trafsim.trafsim.Coordinate;
@@ -86,8 +81,8 @@ public class RoadAreaGUI extends JPanel implements ActionListener {
 	 */
 	public RoadAreaGUI() {
 		
-		width = 1100;
-		height = 300;
+		width = 1020;
+		height = 100;
 		
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		
@@ -135,18 +130,21 @@ public class RoadAreaGUI extends JPanel implements ActionListener {
 	{
 		//System.out.println("Vitesse avant : " + cl.get(0).getVelocity() + " || Position avant (x) : " + cl.get(0).getPosition().getX());
 			
-			try {
-				sem.acquire();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			//System.out.println("Update velocity and position - Debut");
-			IDM.updateCarsVelocity( this.carsList );
-			IDM.updateCarsPosition( this.carsList );
-			//System.out.println("Update velocity and position - FIN");
-			sem.release();
+		try {
+			sem.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//System.out.println("Update velocity and position - Debut");
+		IDM.updateCarsVelocity( this.carsList );
+		IDM.updateCarsPosition( this.carsList );
+		//System.out.println("Update velocity and position - FIN");
+		sem.release();
 		//System.out.println("Vitesse apres : " + cl.get(0).getVelocity() + " || Position après (x) : " + cl.get(0).getPosition().getX() );
+		
+		/*RepaintManager.currentManager(this).addDirtyRegion(this, 0, 0, width, height);
+		RepaintManager.currentManager(this).paintDirtyRegions();*/
 		
 		this.repaint();
 	}

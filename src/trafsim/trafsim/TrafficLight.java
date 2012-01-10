@@ -1,10 +1,13 @@
 package trafsim.trafsim;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.Semaphore;
 
 import javax.swing.Timer;
+
+import trafsim.gui.CarGUI;
 
 /**
  * Representation of a traffic light in the system
@@ -12,17 +15,17 @@ import javax.swing.Timer;
  * @author Albin Poignot, Julien Teruel
  * @version 0.1
  */
-public class TrafficLight implements ActionListener
+public class TrafficLight extends Car implements ActionListener
 {
 	/**
 	 * Position in the system
 	 */
-	private Coordinate position;
+	//private Coordinate position;
 	
 	/**
 	 * The Car object used to simulate a stopped car in order to force the other cars to stop 
 	 */
-	private Car car;
+	//private Car car;
 	
 	/**
 	 * List Car
@@ -60,16 +63,27 @@ public class TrafficLight implements ActionListener
 	private Timer timerSwitch;
 	private final Semaphore sem;
 	
+	//private static Float desiredVelocity = 0f;
+	
+	
+	
 	/**
 	 * Overload constructor. Set the position, the carList and the semaphore attributes. Then automatically set the Timers to default values.
 	 * @param position The position of traffic lights
 	 */
-	
 	public TrafficLight(Coordinate position, ListCar cl, Semaphore sem ) 
 	{
-		this.position = position;
+		//this.position = position;
 		this.carList = cl;	
-		this.car = new Car( position.getX(), position.getY(), 0f, 0f );
+		
+		//this.car = new Car( position.getX(), position.getY(), 0f, 0f );
+		this.setPosition(position);
+		this.setVelocity(0f);
+		this.setDesiredVelocity(0f);
+		
+		this.setImage(new CarGUI(position, 20, 20));
+		this.getImage().setColor(Color.RED);
+		
 		this.sem = sem;
 		
 		try {
@@ -102,12 +116,15 @@ public class TrafficLight implements ActionListener
 		
 		for( int i = 0; i < carList.size(); i ++ )
 		{
-			if( carList.get(i).getPosition().getX() < this.position.getX() )
+			if( carList.get(i).getPosition().getX() < this.getPosition().getX() )
 			{
 				index++;
 			}
 		}
-		carList.add(index, this.car );
+		carList.add( index, this );
+		
+		System.out.println("Ajout en position " + index);
+		
 		sem.release();
 	}
 	
@@ -120,7 +137,7 @@ public class TrafficLight implements ActionListener
 		this.sem.acquire();
 		for( int i = 0; i < carList.size(); i ++ )
 		{
-			if( carList.get(i) == car )
+			if( carList.get(i) == this )
 			{
 				carList.remove(i);
 			}

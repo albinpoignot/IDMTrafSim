@@ -15,7 +15,7 @@ public class Car
 	/**
 	 * Desired velocity for all cars.
 	 */
-	private Float desiredVelocity;
+	private Float desiredVelocity = 15f;
 	
 	public Float getDesiredVelocity() {
 		return desiredVelocity;

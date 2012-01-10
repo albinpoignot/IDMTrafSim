@@ -8,26 +8,14 @@
 package trafsim.gui;
 
 import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferStrategy;
-import java.util.concurrent.Semaphore;
+import java.awt.GridLayout;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.RepaintManager;
-import javax.swing.Timer;
 import javax.swing.WindowConstants;
-
-import trafsim.trafsim.Car;
-import trafsim.trafsim.Coordinate;
-import trafsim.trafsim.IDM;
-import trafsim.trafsim.ListCar;
-import trafsim.trafsim.ListTrafficLight;
-import trafsim.trafsim.Road;
-import trafsim.trafsim.TrafficLight;
+import javax.swing.border.EmptyBorder;
 
 /**
  * No description
@@ -41,6 +29,8 @@ public class Application {
 	private static final long serialVersionUID = 1L;
 	
 	private RoadAreaGUI road;
+	
+	private JPanel controlsArea;
 	
 	private JFrame frame;
 	
@@ -57,20 +47,25 @@ public class Application {
 		// Init frame
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.setSize(1200, 600);
-		
-		//this.setIgnoreRepaint(true);
-		
-		
-		//textField = new JTextField(30);
-		
+
+		// Road
 		road = new RoadAreaGUI();
 		
+		// Controls
+		controlsArea = new JPanel(new GridLayout());
+		controlsArea.setBorder(new EmptyBorder(30, 30, 30, 30));
 		
-		//textField.setLocation(100, 90);
+		JTextField txtField = new JTextField(30);
 		
-		//this.add(textField);
+		// Velocity
+		controlsArea.add(new JLabel("Desired velocity"));
+		controlsArea.add(txtField);
+		
+		// 
+		
 		frame.setLayout(new FlowLayout());
 		frame.add(road);
+		frame.add(controlsArea);
 		
 		road.repaint();
 		
