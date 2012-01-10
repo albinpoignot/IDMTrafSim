@@ -22,11 +22,6 @@ import javax.swing.border.EmptyBorder;
  *
  */
 public class Application {
-
-	/**
-	 * Used in case of serialization. Useless here.
-	 */
-	private static final long serialVersionUID = 1L;
 	
 	private RoadAreaGUI road;
 	
@@ -55,11 +50,11 @@ public class Application {
 		controlsArea = new JPanel(new GridLayout());
 		controlsArea.setBorder(new EmptyBorder(30, 30, 30, 30));
 		
-		JTextField txtField = new JTextField(30);
+		textField = new JTextField(30);
 		
 		// Velocity
 		controlsArea.add(new JLabel("Desired velocity"));
-		controlsArea.add(txtField);
+		controlsArea.add(textField);
 		
 		// 
 		

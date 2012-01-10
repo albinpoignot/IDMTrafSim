@@ -27,6 +27,11 @@ public class CarGUI extends Canvas {
 	private static final long serialVersionUID = 1L;
 	
 	/**
+	 * Length of all cars
+	 */
+	private static Integer LENGTH = 10;
+
+	/**
 	 * Position of the car
 	 */
 	private Coordinate position;
@@ -60,7 +65,15 @@ public class CarGUI extends Canvas {
 	public void setColor(Color color) {
 		this.color = color;
 	}
-
+	
+	
+	
+	/**
+	 * @return the lENGTH
+	 */
+	public static Integer getLENGTH() {
+		return LENGTH;
+	}
 
 	/**
 	 * Overload constructor to initialize attributes. The color is set to a random one.
@@ -70,14 +83,11 @@ public class CarGUI extends Canvas {
 	 */
 	public CarGUI( Coordinate position, Integer height, Integer width ) {
 		
-		// Init attributes
 		this.position = position;
 		this.height = height;
 		this.width = width;
 		
-		// Init some properties of the draw
 		setSize(this.width, this.height); 
-		//setBackground(Color.RED);
 		
 		Random randomGenerator = new Random();
 		int red = randomGenerator.nextInt(255);
@@ -86,21 +96,6 @@ public class CarGUI extends Canvas {
 
 		color = new Color(red,green,blue);
 	}
-
-	
-	/**
-	 * @return the carList
-	 */
-	/*public ListCar getCarList() {
-		return carList;
-	}*/
-
-	/**
-	 * @param carList the carList to set
-	 */
-	/*public void setCarList(ListCar carList) {
-		this.carList = carList;
-	}*/
 	
 	/**
 	 * @return the position
@@ -123,25 +118,17 @@ public class CarGUI extends Canvas {
 	public void paint(Graphics g) {
 		
 		update(g);
-		/*g.setColor(Color.RED);
-		//System.out.println("     Position in the CarGUI : " + position.getX());
-		//g.drawRect( Math.round(position.getX()), Math.round(position.getY()), 10, 10 );
-		g.fillRect( Math.round(position.getX()), Math.round(position.getY()), 10, 10 );*/
 		
 	} 
 	
 	/**
-	 * Draw the car.
+	 * Draw the car
 	 * @see javax.swing.JFrame#update(java.awt.Graphics)
 	 */
 	@Override
 	public void update(Graphics g) {
-
 		g.setColor(color);
-		//g.setColor(Color.RED);
-		//System.out.println("     Position in the CarGUI : " + position.getX());
-		//g.drawRect( Math.round(position.getX()), Math.round(position.getY()), 10, 10 );
-		g.fillRect( Math.round(position.getX()), Math.round(position.getY()), 10, 10 );
+		g.fillRect( Math.round(position.getX()), Math.round(position.getY()), LENGTH, LENGTH );
 	}
 
 }

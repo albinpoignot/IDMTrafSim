@@ -18,21 +18,6 @@ public class ListCar extends ArrayList<Car> {
 	 * Automatically added for serializable methods (not used here)
 	 */
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Constructor
-	 */
-	public ListCar() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param initialCapacity
-	 */
-	public ListCar(int initialCapacity) {
-		super(initialCapacity);
-		// TODO Auto-generated constructor stub
-	}
 	
 	/**
 	 * Return the car in front of the given car
@@ -64,16 +49,4 @@ public class ListCar extends ArrayList<Car> {
 			System.out.println("Car #" + i + ", velocity max = " + this.get(i).getDesiredVelocity() ); 
 		}
 	}
-	
-	/**
-	 * @deprecated
-	 */
-	public void paintAllCars() {
-		
-		for (Car car : this) {
-			car.paint();
-		}
-		
-	}
-	
 }

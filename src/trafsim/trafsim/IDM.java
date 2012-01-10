@@ -1,5 +1,7 @@
 package trafsim.trafsim;
 
+import trafsim.gui.CarGUI;
+
 /**
  * Representation of the Intelligent Driver Model in the system
  * 
@@ -10,11 +12,6 @@ package trafsim.trafsim;
  */
 public class IDM 
 {
-	/**
-	 * Desired velocity for all cars.
-	 */
-	//private static Float desiredVelocity = new Float(36);
-	
 	/**
 	 * Minimum spacing between all cars.
 	 */
@@ -46,8 +43,6 @@ public class IDM
 	 * @param carList The ListCar of the Car that should be updated
 	 */
 	public static void updateCarsVelocity( ListCar carList ) {
-		
-		// TODO In term5 : set a correct value for the car length (15 for now because no CarGUI class exists)
 		
 		/*
 		 * To understand the following lines, please take a look on the IDM.
@@ -81,57 +76,22 @@ public class IDM
 	
 				if( carList.lastIndexOf(car) != (carList.size()-1)  ) // General formula
 				{
+					//System.out.println("velo " + carList.getNext(car).getVelocity() + "(index : " + carList.lastIndexOf(car) + ")" );
 					
-					/*if( car.getVelocity() * 2 <= carList.getNext(car).getVelocity() ) //High approaching rate (2 * v_(alpha-1))				
-					{*/	
-						/*
-						 * Julien's version
-						 * term2 = (float)( -1 * Math.pow( car.getVelocity() * ( car.getVelocity() - carList.getNext(car).getVelocity() ), 2 ) );
-						 * term3 = 4 * IDM.brakingDeceleration * (float) Math.pow(carList.getNext(car).getPosition().getX() - car.getPosition().getX() - 10, 2);
-						 * vpoint = term2 / term3;
-						 */
-						
-						// S_STAR
-						/*delta_valpha = car.getVelocity() - carList.getNext(car).getVelocity() ;
-						term3 = (float) ((car.getVelocity() * delta_valpha) / (Math.sqrt(IDM.acceleration * IDM.brakingDeceleration)));
-						s_star = IDM.minimumSpacing + car.getVelocity() * IDM.timeHeadway + term3;
-						
-						// S_ALPHA
-						s_alpha = (float) carList.getNext(car).getPosition().getX() - car.getPosition().getX() - 10;
-						
-						// - A * ( S_STAR / S_ALPHA ) ^ 2
-						vpoint = (float) (-1 * IDM.acceleration * Math.pow(s_star/s_alpha, 2));
-					}
-					else // General case */
-					if(true)
+					delta_valpha = car.getVelocity() - carList.getNext(car).getVelocity() ;
+					
+					term3 = (float) ((car.getVelocity() * delta_valpha) / ( 2 * Math.sqrt(IDM.acceleration * IDM.brakingDeceleration)));
+					s_star = IDM.minimumSpacing + car.getVelocity() * IDM.timeHeadway + term3;
+					
+					s_alpha = (float) carList.getNext(car).getPosition().getX() - car.getPosition().getX() - CarGUI.getLENGTH();
+					
+					term6 = (float) Math.pow(s_star / s_alpha, 2);
+					
+					vpoint = IDM.acceleration * ( 1 - term1 - term6 ) + car.getVelocity();
+					
+					if( vpoint < 0 )
 					{
-						//System.out.println("velo " + carList.getNext(car).getVelocity() + "(index : " + carList.lastIndexOf(car) + ")" );
-						
-						
-						
-						/*term2 = car.getVelocity() - carList.getNext(car).getVelocity() ;
-						term3 = (float) ((car.getVelocity() * term2) / ( 2 * Math.sqrt(IDM.acceleration * IDM.brakingDeceleration)));
-						term4 = IDM.minimumSpacing + car.getVelocity() * IDM.timeHeadway + term3;
-						term5 = (float) carList.getNext(car).getPosition().getX() - car.getPosition().getX() - 10;
-						term6 = (float) Math.pow(term4 / term5, 2);
-						vpoint = IDM.acceleration * ( 1 - term1 - term6 ) + car.getVelocity();*/
-						
-						delta_valpha = car.getVelocity() - carList.getNext(car).getVelocity() ;
-						
-						// 2 * square_root ??
-						term3 = (float) ((car.getVelocity() * delta_valpha) / ( 2 * Math.sqrt(IDM.acceleration * IDM.brakingDeceleration)));
-						s_star = IDM.minimumSpacing + car.getVelocity() * IDM.timeHeadway + term3;
-						
-						s_alpha = (float) carList.getNext(car).getPosition().getX() - car.getPosition().getX() - 10;
-						
-						term6 = (float) Math.pow(s_star / s_alpha, 2);
-						
-						vpoint = IDM.acceleration * ( 1 - term1 - term6 ) + car.getVelocity();
-						
-						if( vpoint < 0 )
-						{
-							//System.out.println("Voiture nouvelle vitesse " + vpoint + " " + term4 + " " + term5 );
-						}
+						//System.out.println("Voiture nouvelle vitesse " + vpoint + " " + term4 + " " + term5 );
 					}
 				}
 				else // Free road behavior 1 car or first car 
@@ -156,25 +116,13 @@ public class IDM
 		{
 			//System.out.println("  Velocity : " + car.getVelocity() + " || rounded value : " + Math.round(car.getPosition().getX() + car.getVelocity()));
 			
-			// TODO Remove the debug line...
 			//System.out.println("   1--> " + car.getPosition().getX() );
-			Coordinate nPos = new Coordinate( car.getPosition().getX() + (car.getVelocity() / 20), car.getPosition().getY()); // Debug
-			//Coordinate nPos = new Coordinate(car.getPosition().getX() + car.getVelocity(), car.getPosition().getY()); // Prod
+			
+			Coordinate nPos = new Coordinate( car.getPosition().getX() + (car.getVelocity() / 20), car.getPosition().getY());
+			
 			car.setPosition(nPos);
+			
 			//System.out.println("   2--> " + car.getPosition().getX() );
 		}
 	}
-	
-	/* (non-javadoc)
-	 * NOT IMPLEMTED YET
-	 */
-	/*private static void updateSystem() {
-		
-		// TODO Find correct arguments, and what to do here...
-		
-		// 		1. For each road :
-		//			1.1 IDM.updateCars(road)
-		//		...
-		 
-	}*/
 }

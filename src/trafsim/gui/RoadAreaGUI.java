@@ -16,7 +16,6 @@ import java.util.concurrent.Semaphore;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.RepaintManager;
 import javax.swing.Timer;
 
@@ -72,9 +71,6 @@ public class RoadAreaGUI extends JPanel implements ActionListener {
 	public Semaphore getSem() {
 		return sem;
 	}
-	
-	private JTextField textField;
-
 
 	/**
 	 * Default constructor. Create the graphic interface automatically, add cars and traffic lights and launch the system.
@@ -85,11 +81,6 @@ public class RoadAreaGUI extends JPanel implements ActionListener {
 		height = 100;
 		
 		setBorder(BorderFactory.createLineBorder(Color.black));
-		
-		// Init frame
-		//this.setSize(1100, 300);
-		
-		//this.setIgnoreRepaint(true);
 		
 		RepaintManager currentManager = RepaintManager.currentManager(this);
 		currentManager.setDoubleBufferingEnabled(true);
@@ -136,15 +127,17 @@ public class RoadAreaGUI extends JPanel implements ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		//System.out.println("Update velocity and position - Debut");
+		
 		IDM.updateCarsVelocity( this.carsList );
 		IDM.updateCarsPosition( this.carsList );
-		//System.out.println("Update velocity and position - FIN");
-		sem.release();
-		//System.out.println("Vitesse apres : " + cl.get(0).getVelocity() + " || Position après (x) : " + cl.get(0).getPosition().getX() );
 		
-		/*RepaintManager.currentManager(this).addDirtyRegion(this, 0, 0, width, height);
-		RepaintManager.currentManager(this).paintDirtyRegions();*/
+		//System.out.println("Update velocity and position - FIN");
+		
+		sem.release();
+		
+		//System.out.println("Vitesse apres : " + cl.get(0).getVelocity() + " || Position après (x) : " + cl.get(0).getPosition().getX() );
 		
 		this.repaint();
 	}
@@ -152,8 +145,6 @@ public class RoadAreaGUI extends JPanel implements ActionListener {
 	@Override
 	public void paintComponent(Graphics g)
 	{
-		//super.paintComponent(g); 
-		
 		street.getImage().paint(g);
 		
 		for (Car car : carsList) {

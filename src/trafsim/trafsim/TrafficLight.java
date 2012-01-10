@@ -61,22 +61,20 @@ public class TrafficLight extends Car implements ActionListener
 	 * Waiting timer for the switch from Green to Red
 	 */
 	private Timer timerSwitch;
-	private final Semaphore sem;
-	
-	//private static Float desiredVelocity = 0f;
-	
-	
 	
 	/**
-	 * Overload constructor. Set the position, the carList and the semaphore attributes. Then automatically set the Timers to default values.
+	 * Semaphore
+	 */
+	private final Semaphore sem;
+	
+	/**
+	 * Overload constructor. Set the position, the carList and the semaphore attributes. Velocity and DesiredVelocity herited attributes are forced
+	 * to value 0. Then automatically set the Timers to default values.
 	 * @param position The position of traffic lights
 	 */
 	public TrafficLight(Coordinate position, ListCar cl, Semaphore sem ) 
 	{
-		//this.position = position;
-		this.carList = cl;	
-		
-		//this.car = new Car( position.getX(), position.getY(), 0f, 0f );
+		this.carList = cl;		
 		this.setPosition(position);
 		this.setVelocity(0f);
 		this.setDesiredVelocity(0f);
@@ -89,7 +87,6 @@ public class TrafficLight extends Car implements ActionListener
 		try {
 			insertTrafficLight();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -104,7 +101,6 @@ public class TrafficLight extends Car implements ActionListener
 		this.timerSwitch.setInitialDelay(switchGap);
 	}
 	
-	//private void insererFeu() throws Exception
 	/**
 	 * Inserts the TrafficLight to the correct position in its carList property
 	 * @throws Exception Throws an exception when the traffic light can't be inserted in the carList
@@ -135,13 +131,9 @@ public class TrafficLight extends Car implements ActionListener
 	private void removeTrafficLight() throws Exception
 	{
 		this.sem.acquire();
-		for( int i = 0; i < carList.size(); i ++ )
-		{
-			if( carList.get(i) == this )
-			{
-				carList.remove(i);
-			}
-		}
+		
+		carList.remove(this);
+		
 		this.sem.release();
 	}
 
@@ -159,7 +151,6 @@ public class TrafficLight extends Car implements ActionListener
 			try {
 				removeTrafficLight();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -174,7 +165,6 @@ public class TrafficLight extends Car implements ActionListener
 			try {
 				insertTrafficLight();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			timerSwitch.start();

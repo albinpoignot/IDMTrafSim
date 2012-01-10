@@ -55,31 +55,20 @@ public class RoadGUI extends Canvas {
 	}
 	
 	/**
-	 * Overload constructor to init attributes
+	 * Overload constructor to initialiaze attributes
 	 * @param position Position of the road
 	 * @param height Height of the road
 	 * @param width Width of the road
 	 */
 	public RoadGUI( Coordinate position, Integer height, Integer width ) {
 		
-		// Init attributes
 		this.position = position;
 		this.height = height;
 		this.width = width;
-		
-		// Init some properties of the draw
+
 		setSize(width, height); 
 		setBackground(Color.darkGray);
 	}
-
-	/**
-	 * @param config
-	 */
-	public RoadGUI(GraphicsConfiguration config) {
-		super(config);
-		// TODO Auto-generated constructor stub
-	}
-
 	
 	/**
 	 * @return the carList
@@ -101,38 +90,16 @@ public class RoadGUI extends Canvas {
 	public void paint(Graphics g) {
 		
 		update(g);
-		
-		// Draw the road
-		/*g.setColor(Color.DARK_GRAY);
-		g.fillRect(Math.round(position.getX()), Math.round(position.getY()), width - 1, height - 1);
-				
-		// Draw the border
-		g.setColor(Color.BLUE);
-		g.drawRect(Math.round(position.getX()), Math.round(position.getY()), width - 1, height - 1);
-		
-		// Draw the middle line
-		g.setColor(Color.WHITE);
-		g.fillRect(Math.round(position.getX()) + 1, Math.round(position.getY()) + 30, width - 5, 3);*/
-		
-		// Draw the cars
-		/*g.setColor(Color.RED);
-	    
-		/*for (Car car : carList) {
-			//car.paint();
-			g.setColor(Color.RED);
-			System.out.println("     Position of the Car : " + car.getPosition().getX());
-			//g.drawRect( Math.round(car.getPosition().getX()), Math.round(car.getPosition().getY()), 10, 10 );
-			g.fillRect( Math.round(car.getPosition().getX()), Math.round(car.getPosition().getY()), 10, 10 );
-		}*/
 
 	}
 	
 	/**
-	 * Draw the road.
+	 * Draw the road (background, border and middle line)
 	 * @see javax.swing.JFrame#update(java.awt.Graphics)
 	 */
 	@Override
 	public void update(Graphics g) {
+		
 		// Draw the road
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(Math.round(position.getX()), Math.round(position.getY()), width - 1, height - 1);
@@ -144,6 +111,7 @@ public class RoadGUI extends Canvas {
 		// Draw the middle line
 		g.setColor(Color.WHITE);
 		g.fillRect(Math.round(position.getX()) + 1, Math.round(position.getY()) + 30, width - 5, 3);
+		
 	}
 
 }
