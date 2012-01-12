@@ -7,6 +7,8 @@ package trafsim.trafsim;
 
 import java.util.ArrayList;
 
+import javax.swing.text.html.HTMLDocument.Iterator;
+
 /**
  * Manage an ordered list of Cars. Actually, do same kind of things that
  * ArrayList<Car> but allow to redefine some methods if needed. 
@@ -49,4 +51,5 @@ public class ListCar extends ArrayList<Car> {
 			System.out.println("Car #" + i + ", velocity max = " + this.get(i).getDesiredVelocity() ); 
 		}
 	}
+
 }

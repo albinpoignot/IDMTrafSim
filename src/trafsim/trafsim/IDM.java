@@ -117,7 +117,7 @@ public class IDM
 	 * 
 	 * @param carList The ListCar of the Car that should be updated
 	 */
-	public void updateCarsVelocity( ListCar carList ) {
+	public Car updateCarsVelocity(Car car, ListCar carList) {
 		
 		/*
 		 * To understand the following lines, please take a look on the IDM.
@@ -140,7 +140,9 @@ public class IDM
 		Float term1, term3, term6;
 		Float delta_valpha, s_star, s_alpha;
 		
-		for (Car car : carList) {
+		//ListCar listCar = carList;
+		
+		//for (Car car : listCar) {
 			
 			if( car.getDesiredVelocity() != 0 )
 			{
@@ -177,7 +179,9 @@ public class IDM
 				// Finally, update the velocity of the current car with the found value 
 				car.setVelocity(vpoint);
 			}
-		}
+		//}
+		
+		return car;
 	}
 	
 	/**
@@ -185,19 +189,26 @@ public class IDM
 	 * 
 	 * @param carList The ListCar of the Car that should be updated
 	 */
-	public void updateCarsPosition( ListCar carList ) 
+	//public ListCar updateCarsPosition( ListCar carList ) 
+	public Car updateCarsPosition(Car car)
 	{
-		for (Car car : carList) 
-		{
+		
+		//ListCar listCar = carList;
+		
+		/*for (Car car : listCar) 
+		{*/
 			//System.out.println("  Velocity : " + car.getVelocity() + " || rounded value : " + Math.round(car.getPosition().getX() + car.getVelocity()));
 			
 			//System.out.println("   1--> " + car.getPosition().getX() );
 			
-			Coordinate nPos = new Coordinate( car.getPosition().getX() + (car.getVelocity() / 20), car.getPosition().getY());
+			Coordinate nPos = new Coordinate( car.getPosition().getX() + (car.getVelocity() / 20), car.getPosition().getY() );
 			
 			car.setPosition(nPos);
 			
 			//System.out.println("   2--> " + car.getPosition().getX() );
-		}
+		//}
+		
+		return car;
 	}
+	
 }

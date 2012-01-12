@@ -31,11 +31,17 @@ public class TrafficLight extends Car implements ActionListener
 	 * Duration of the red light
 	 */
 	private static Integer redGap = 30000;
+	//private static Integer redGap = 5000;
 	
 	/**
 	 * Duration of switching between green and red
 	 */
 	private static Integer switchGap = 2000;
+	
+	/**
+	 * State of the traffic light. 0 = updated, 1 = red, 2 = orange, 3 = green.
+	 */
+	private Integer state;
 	
 	/**
 	 * Waiting timer when traffic light is red
@@ -55,16 +61,16 @@ public class TrafficLight extends Car implements ActionListener
 	/**
 	 * Semaphore
 	 */
-	private final Semaphore sem;
+	//private final Semaphore sem;
 	
 	/**
 	 * Overload constructor. Set the position, the carList and the semaphore attributes. Velocity and DesiredVelocity herited attributes are forced
 	 * to value 0. Then automatically set the Timers to default values.
 	 * @param position The position of traffic lights
 	 */
-	public TrafficLight(Coordinate position, ListCar cl, Semaphore sem ) 
-	{
-		this.carList = cl;		
+	//public TrafficLight(Coordinate position, ListCar cl, Semaphore sem ) 
+	public TrafficLight(Coordinate position)
+	{	
 		this.setPosition(position);
 		this.setVelocity(0f);
 		this.setDesiredVelocity(0f);
@@ -72,17 +78,10 @@ public class TrafficLight extends Car implements ActionListener
 		this.setImage(new CarGUI(position, 20, 20));
 		this.getImage().setColor(Color.RED);
 		
-		this.sem = sem;
-		
-		try {
-			insertTrafficLight();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
 		this.timerRed = new Timer( redGap, this );
 		this.timerRed.setInitialDelay( redGap );
 		this.timerRed.start();
+		state = 1;
 		
 		this.timerGreen = new Timer( greenGap, this );
 		this.timerGreen.setInitialDelay(greenGap);
@@ -90,12 +89,52 @@ public class TrafficLight extends Car implements ActionListener
 		this.timerSwitch = new Timer( switchGap, this );
 		this.timerSwitch.setInitialDelay(switchGap);
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		
+		if( arg0.getSource() == this.timerRed )
+		{
+			// Green
+			timerRed.stop();
+			timerGreen.start();	
+			state = 3;
+		}
+		else if( arg0.getSource() == this.timerSwitch )
+		{
+			// Red
+			timerSwitch.stop();
+			timerRed.start();
+			state = 1;
+		}
+		else if(arg0.getSource() == this.timerGreen )
+		{
+			// Orange
+			timerGreen.stop();
+			state = 2;
+			timerSwitch.start();
+		}
+	}
+
+	/**
+	 * @return the state
+	 */
+	public Integer getState() {
+		return state;
+	}
+
+	/**
+	 * @param state the state to set
+	 */
+	public void setState(Integer state) {
+		this.state = state;
+	}
 	
 	/**
 	 * Inserts the TrafficLight to the correct position in its carList property
 	 * @throws Exception Throws an exception when the traffic light can't be inserted in the carList
 	 */
-	private void insertTrafficLight() throws Exception 
+	/*private void insertTrafficLight() throws Exception 
 	{
 		sem.acquire(); 
 		int index = 0;
@@ -112,26 +151,26 @@ public class TrafficLight extends Car implements ActionListener
 		//System.out.println("Ajout en position " + index);
 		
 		sem.release();
-	}
+	}*/
 	
 	/**
 	 * Removes the TrafficLight from its carList property
 	 * @throws Exception Throws an exception when the traffic light can't be removed from the carList
 	 */
-	private void removeTrafficLight() throws Exception
+	/*private void removeTrafficLight() throws Exception
 	{
 		this.sem.acquire();
 		
 		carList.remove(this);
 		
 		this.sem.release();
-	}
+	}*/
 
 	/**
 	 * Automatically called by a Timer. Insert or remove the TrafficLight in its carList when it's time to do it.<br />
 	 * <i>Process : wait redGap => become green => wait greenGap => wait switchGap => become red => start over</i>
 	 */
-	@Override
+	/*@Override
 	public void actionPerformed(ActionEvent arg0)  // TODO Changer graphisme
 	{
 		if( arg0.getSource() == this.timerRed )
@@ -158,6 +197,12 @@ public class TrafficLight extends Car implements ActionListener
 				e.printStackTrace();
 			}
 			timerSwitch.start();
+		}
+	}*/
+	
+	public void setUpdated(Boolean b) {
+		if(b) {
+			state = 0;
 		}
 	}
 	

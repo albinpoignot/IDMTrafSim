@@ -20,6 +20,8 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
+import trafsim.controllers.Controller;
+import trafsim.trafsim.Car;
 import trafsim.trafsim.IDM;
 
 /**
@@ -34,6 +36,8 @@ public class Application {
 	
 	private JFrame frame;
 	
+	private Controller controller;
+	
 	private JTextField txtAcceleration;
 	private JTextField txtBrakingDeceleration;
 	private JTextField txtDesiredVelocity;
@@ -42,6 +46,8 @@ public class Application {
 	
 	private JButton btnStart;
 	private JButton btnStop;
+	private JButton btnPause;
+	private JButton btnResume;
 	
 	private IDM model;
 
@@ -56,16 +62,19 @@ public class Application {
 		
 		model = new IDM();
 		
+		controller = new Controller(model);
+		
 		// Init frame
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.setSize(1200, 600);
 
 		// Road
-		road = new RoadAreaGUI();
-		road.setModel(model);
+		//road = new RoadAreaGUI();
+		//road.setModel(model);
+		//controller.setModel(model);
 		
 		// Controls
-		controlsArea = new JPanel(new GridLayout(7, 2));
+		controlsArea = new JPanel(new GridLayout(8, 2));
 		controlsArea.setBorder(new EmptyBorder(30, 30, 30, 30));
 		
 		txtAcceleration = new JTextField(30);
@@ -111,6 +120,9 @@ public class Application {
 		// Buttons
 		btnStart = new JButton("Start");
 		btnStop = new JButton("Stop");
+		btnPause = new JButton("Pause");
+		btnResume = new JButton("Resume");
+		btnResume.setEnabled(false);
 		
 		btnStart.addActionListener(new ActionListener() {
 			
@@ -124,9 +136,10 @@ public class Application {
 				model.setMinimumSpacing(Float.parseFloat(txtMinimumSpacing.getText()));
 				model.setTimeHeadway(Float.parseFloat(txtTimeHeadway.getText()));
 				
-				road.setModel(model);
-				road.startSimulation();
-				
+				controller.setModel(model);
+				controller.startSimulation();
+				//road.setModel(model);
+				//road.startSimulation();
 			}
 			
 		});
@@ -135,19 +148,46 @@ public class Application {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				road.stopSimulation();
+				//road.stopSimulation();
+				controller.stopSimulation();
+			}
+			
+		});
+		
+		btnPause.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				//road.stopSimulation();
+				controller.pauseSimulation();
+				btnPause.setEnabled(false);
+				btnResume.setEnabled(true);
+			}
+			
+		});
+		
+		btnResume.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				//road.stopSimulation();
+				controller.resumeSimulation();
+				btnPause.setEnabled(true);
+				btnResume.setEnabled(false);
 			}
 			
 		});
 		
 		controlsArea.add(btnStart);
 		controlsArea.add(btnStop);
+		controlsArea.add(btnPause);
+		controlsArea.add(btnResume);
 		
 		frame.setLayout(new FlowLayout());
-		frame.add(road);
+		frame.add(controller.getRoadAreaGui());
 		frame.add(controlsArea);
 		
-		road.repaint();
+		controller.repaint();
 		
 		frame.setVisible(true);
 
