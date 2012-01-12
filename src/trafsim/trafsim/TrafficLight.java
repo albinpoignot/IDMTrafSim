@@ -18,16 +18,6 @@ import trafsim.gui.CarGUI;
 public class TrafficLight extends Car implements ActionListener
 {
 	/**
-	 * Position in the system
-	 */
-	//private Coordinate position;
-	
-	/**
-	 * The Car object used to simulate a stopped car in order to force the other cars to stop 
-	 */
-	//private Car car;
-	
-	/**
 	 * List Car
 	 */
 	private ListCar carList;
@@ -119,7 +109,7 @@ public class TrafficLight extends Car implements ActionListener
 		}
 		carList.add( index, this );
 		
-		System.out.println("Ajout en position " + index);
+		//System.out.println("Ajout en position " + index);
 		
 		sem.release();
 	}

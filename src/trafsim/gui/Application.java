@@ -9,13 +9,18 @@ package trafsim.gui;
 
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
+
+import trafsim.trafsim.IDM;
 
 /**
  * No description
@@ -29,7 +34,17 @@ public class Application {
 	
 	private JFrame frame;
 	
-	private JTextField textField;
+	private JTextField txtAcceleration;
+	private JTextField txtBrakingDeceleration;
+	private JTextField txtDesiredVelocity;
+	private JTextField txtMinimumSpacing;
+	private JTextField txtTimeHeadway;
+	
+	private JButton btnStart;
+	private JButton btnStop;
+	
+	private IDM model;
+
 
 
 	/**
@@ -39,24 +54,94 @@ public class Application {
 		
 		frame = new JFrame("IDM Implementation");
 		
+		model = new IDM();
+		
 		// Init frame
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.setSize(1200, 600);
 
 		// Road
 		road = new RoadAreaGUI();
+		road.setModel(model);
 		
 		// Controls
-		controlsArea = new JPanel(new GridLayout());
+		controlsArea = new JPanel(new GridLayout(7, 2));
 		controlsArea.setBorder(new EmptyBorder(30, 30, 30, 30));
 		
-		textField = new JTextField(30);
+		txtAcceleration = new JTextField(30);
+		txtAcceleration.setText("0.3");
+		
+		txtBrakingDeceleration = new JTextField(30);
+		txtBrakingDeceleration.setText("3.0");
+		
+		txtDesiredVelocity = new JTextField(30);
+		txtDesiredVelocity.setText("15");
+		
+		txtMinimumSpacing = new JTextField(30);
+		txtMinimumSpacing.setText("1.0");
+		
+		txtTimeHeadway = new JTextField(30);
+		txtTimeHeadway.setText("1.5");
+		
 		
 		// Velocity
-		controlsArea.add(new JLabel("Desired velocity"));
-		controlsArea.add(textField);
+		controlsArea.add(new JLabel("Desired velocity"), 0);
+		controlsArea.add(txtDesiredVelocity,1);
 		
-		// 
+		// Float minimumSpacing
+		controlsArea.add(new JLabel("Minimum spacing"), 2);
+		controlsArea.add(txtMinimumSpacing, 3);
+		
+		// Float timeHeadway
+		controlsArea.add(new JLabel("Time headway"));
+		controlsArea.add(txtTimeHeadway);
+		
+		// Float acceleration
+		controlsArea.add(new JLabel("Acceleration"));
+		controlsArea.add(txtAcceleration);
+		
+		// Float brakingDeceleration
+		controlsArea.add(new JLabel("Braking deceleration"));
+		controlsArea.add(txtBrakingDeceleration);
+		
+		// Separators
+		controlsArea.add(new JLabel("--------"));
+		controlsArea.add(new JLabel("--------"));
+		
+		// Buttons
+		btnStart = new JButton("Start");
+		btnStop = new JButton("Stop");
+		
+		btnStart.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+				model = new IDM();
+				model.setAcceleration(Float.parseFloat(txtAcceleration.getText()));
+				model.setBrakingDeceleration(Float.parseFloat(txtBrakingDeceleration.getText()));
+				model.setDesiredVelocity(Float.parseFloat(txtDesiredVelocity.getText()));
+				model.setMinimumSpacing(Float.parseFloat(txtMinimumSpacing.getText()));
+				model.setTimeHeadway(Float.parseFloat(txtTimeHeadway.getText()));
+				
+				road.setModel(model);
+				road.startSimulation();
+				
+			}
+			
+		});
+		
+		btnStop.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				road.stopSimulation();
+			}
+			
+		});
+		
+		controlsArea.add(btnStart);
+		controlsArea.add(btnStop);
 		
 		frame.setLayout(new FlowLayout());
 		frame.add(road);
@@ -65,112 +150,8 @@ public class Application {
 		road.repaint();
 		
 		frame.setVisible(true);
-		
-		/*this.add(textField);
-		textField.setLocation(400, 200);*/
-		
-		/*this.repaint();
-		
-		
-		this.createBufferStrategy(2);
-		
-		this.timer = new Timer( 50, this );
-		timer.setInitialDelay(0);
-		timer.start();*/
 
-	}
-	
-	/**
-	 * Automatically called by a Timer. Updates the cars's velocities, release semaphores then repaint the GUI.
-	 */
-	/*@Override
-	public void actionPerformed(ActionEvent arg0) 
-	{
-		//System.out.println("Vitesse avant : " + cl.get(0).getVelocity() + " || Position avant (x) : " + cl.get(0).getPosition().getX());
-			
-			try {
-				sem.acquire();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			//System.out.println("Update velocity and position - Debut");
-			IDM.updateCarsVelocity( this.carsList );
-			IDM.updateCarsPosition( this.carsList );
-			//System.out.println("Update velocity and position - FIN");
-			sem.release();
-		//System.out.println("Vitesse apres : " + cl.get(0).getVelocity() + " || Position après (x) : " + cl.get(0).getPosition().getX() );
-		
-		this.repaint();
-	}*/
-	
-	/* (non-Javadoc)
-	 * @see java.awt.Container#paint(java.awt.Graphics)
-	 */
-	/*@Override
-	public void paint(Graphics g)
-	{
-		//super.paint(g);
-		
-		//street.getImage().paint(g);
-		
-		//for (Car car : cl)
-		//{
-			//car.getImage().paint(g);
-		//}
-		
-		update(g);
-	}*/
-	
-	/*@Override
-	public void paintComponents(Graphics g)
-	{
-		update(g);
-	}*/
-	
-	/* (non-Javadoc)
-	 * @see javax.swing.JFrame#update(java.awt.Graphics)
-	 * @see <a href="http://content.gpwiki.org/index.php/Java:Tutorials:Double_Buffering">Game Programing Wiki</a>
-	 */
-	/*@Override
-	public void update(Graphics g) {
-		
-		
-		BufferStrategy bf = this.getBufferStrategy();
-	 
-		//System.out.println(bf.toString());
-		
-		try {
-			g = bf.getDrawGraphics();
-			
-			street.getImage().paint(g);
-			
-			for (Car car : carsList) {
-				car.getImage().paint(g);
-			}
-			
-			//textField.paint(g);
-//			this.paintComponents(g);
-			
-		}
-		catch (Exception e) {
-			// Do nothing
-		} finally {
-			// It is best to dispose() a Graphics object when done with it.
-			g.dispose();
-		}
-
-		if(bf != null)
-		{
-			// Shows the contents of the backbuffer on the screen.
-			bf.show();
-		}
-	 
-        //Tell the System to do the Drawing now, otherwise it can take a few extra ms until 
-        //Drawing is done which looks very jerky
-        Toolkit.getDefaultToolkit().sync();
-	}*/
-		
+	}	
 
 	/**
 	 * Should not be called !

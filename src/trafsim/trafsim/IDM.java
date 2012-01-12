@@ -13,36 +13,111 @@ import trafsim.gui.CarGUI;
 public class IDM 
 {
 	/**
+	 * @return the desiredVelocity
+	 */
+	public Float getDesiredVelocity() {
+		return desiredVelocity;
+	}
+
+	/**
+	 * @param desiredVelocity the desiredVelocity to set
+	 */
+	public void setDesiredVelocity(Float desiredVelocity) {
+		this.desiredVelocity = desiredVelocity;
+	}
+
+	/**
 	 * Minimum spacing between all cars.
 	 */
-	private static Float minimumSpacing = new Float(1);
+	private Float minimumSpacing = new Float(1);
 	
 	/**
 	 * Time headway between all cars.
 	 */
-	private static Float timeHeadway = new Float(1.5);
+	private Float timeHeadway = new Float(1.5);
 	
 	/**
 	 * Acceleration factor of all cars.
 	 */
-	private static Float acceleration = new Float(0.3);
+	private Float acceleration = new Float(0.3);
 	
 	/**
 	 * Comfortable braking deceleration factor for all cars.
 	 */
-	private static Float brakingDeceleration = new Float(3.0);
+	private Float brakingDeceleration = new Float(3.0);
 	
 	/**
 	 * Independant factor
 	 */
-	private static Integer delta = 4;
+	private Integer delta = 4;
+	
+	/**
+	 * 
+	 */
+	private Float desiredVelocity = new Float(15);
+	
+	/**
+	 * @return the minimumSpacing
+	 */
+	public Float getMinimumSpacing() {
+		return minimumSpacing;
+	}
+
+	/**
+	 * @param minimumSpacing the minimumSpacing to set
+	 */
+	public void setMinimumSpacing(Float minimumSpacing) {
+		this.minimumSpacing = minimumSpacing;
+	}
+
+	/**
+	 * @return the timeHeadway
+	 */
+	public Float getTimeHeadway() {
+		return timeHeadway;
+	}
+
+	/**
+	 * @param timeHeadway the timeHeadway to set
+	 */
+	public void setTimeHeadway(Float timeHeadway) {
+		this.timeHeadway = timeHeadway;
+	}
+
+	/**
+	 * @return the acceleration
+	 */
+	public Float getAcceleration() {
+		return acceleration;
+	}
+
+	/**
+	 * @param acceleration the acceleration to set
+	 */
+	public void setAcceleration(Float acceleration) {
+		this.acceleration = acceleration;
+	}
+
+	/**
+	 * @return the brakingDeceleration
+	 */
+	public Float getBrakingDeceleration() {
+		return brakingDeceleration;
+	}
+
+	/**
+	 * @param brakingDeceleration the brakingDeceleration to set
+	 */
+	public void setBrakingDeceleration(Float brakingDeceleration) {
+		this.brakingDeceleration = brakingDeceleration;
+	}
 	
 	/**
 	 * Update the velocity of each car in the car list
 	 * 
 	 * @param carList The ListCar of the Car that should be updated
 	 */
-	public static void updateCarsVelocity( ListCar carList ) {
+	public void updateCarsVelocity( ListCar carList ) {
 		
 		/*
 		 * To understand the following lines, please take a look on the IDM.
@@ -80,14 +155,14 @@ public class IDM
 					
 					delta_valpha = car.getVelocity() - carList.getNext(car).getVelocity() ;
 					
-					term3 = (float) ((car.getVelocity() * delta_valpha) / ( 2 * Math.sqrt(IDM.acceleration * IDM.brakingDeceleration)));
-					s_star = IDM.minimumSpacing + car.getVelocity() * IDM.timeHeadway + term3;
+					term3 = (float) ((car.getVelocity() * delta_valpha) / ( 2 * Math.sqrt(this.acceleration * this.brakingDeceleration)));
+					s_star = this.minimumSpacing + car.getVelocity() * this.timeHeadway + term3;
 					
 					s_alpha = (float) carList.getNext(car).getPosition().getX() - car.getPosition().getX() - CarGUI.getLENGTH();
 					
 					term6 = (float) Math.pow(s_star / s_alpha, 2);
 					
-					vpoint = IDM.acceleration * ( 1 - term1 - term6 ) + car.getVelocity();
+					vpoint = this.acceleration * ( 1 - term1 - term6 ) + car.getVelocity();
 					
 					if( vpoint < 0 )
 					{
@@ -96,7 +171,7 @@ public class IDM
 				}
 				else // Free road behavior 1 car or first car 
 				{
-					vpoint = IDM.acceleration * ( 1 - term1 ) + car.getVelocity();
+					vpoint = this.acceleration * ( 1 - term1 ) + car.getVelocity();
 				}
 				
 				// Finally, update the velocity of the current car with the found value 
@@ -110,7 +185,7 @@ public class IDM
 	 * 
 	 * @param carList The ListCar of the Car that should be updated
 	 */
-	public static void updateCarsPosition( ListCar carList ) 
+	public void updateCarsPosition( ListCar carList ) 
 	{
 		for (Car car : carList) 
 		{

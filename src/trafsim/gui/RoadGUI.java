@@ -7,7 +7,6 @@ package trafsim.gui;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.GraphicsConfiguration;
 
 import trafsim.trafsim.Coordinate;
 import trafsim.trafsim.ListCar;

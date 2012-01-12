@@ -15,7 +15,7 @@ public class Car
 	/**
 	 * Desired velocity for all cars.
 	 */
-	private Float desiredVelocity = 15f;
+	private Float desiredVelocity;
 	
 	public Float getDesiredVelocity() {
 		return desiredVelocity;
@@ -108,6 +108,7 @@ public class Car
 		position = new Coordinate();
 		velocity = new Float(0);
 		image = new CarGUI(position, 20, 20);
+		desiredVelocity = 0f;
 	}
 	
 	/**

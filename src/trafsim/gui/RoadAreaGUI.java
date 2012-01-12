@@ -45,6 +45,49 @@ public class RoadAreaGUI extends JPanel implements ActionListener {
 	private Timer timer;
 	
 	/**
+	 * @return the timer
+	 */
+	public Timer getTimer() {
+		return timer;
+	}
+
+	/**
+	 * @param timer the timer to set
+	 */
+	public void setTimer(Timer timer) {
+		this.timer = timer;
+	}
+	
+	public void stopSimulation() {
+		timer.stop();
+		removeCars();
+		this.repaint();
+	}
+	
+	public void startSimulation() {
+		addCars();
+		timer.start();
+	}
+	
+	public void addCars() {
+		// 5 cars + 3 traffic lights. No special behavior (such as high approaching rate)
+		carsList.add(new Car( 12f, 66f, 0f, model.getDesiredVelocity() ) ); // Add in cl[0]
+		carsList.add(new Car( 32f, 66f, 5f, model.getDesiredVelocity() ) ); // Add in cl[1]
+		carsList.add(new Car( 52f, 66f, 3f, model.getDesiredVelocity() ) ); // Add in cl[2]
+		carsList.add(new Car( 84f, 66f, 8f, model.getDesiredVelocity() ) ); // Add in cl[3]
+		carsList.add(new Car( 100f, 66f, 5f, model.getDesiredVelocity() ) ); // Add in cl[4]
+
+		trafficLightsList.add( new TrafficLight( new Coordinate( 300f, 80f), carsList, sem ) );
+		trafficLightsList.add( new TrafficLight( new Coordinate( 600f, 80f), carsList, sem ) );
+		trafficLightsList.add( new TrafficLight( new Coordinate( 800f, 80f), carsList, sem ) );
+	}
+	
+	public void removeCars() {
+		carsList = new ListCar();
+		trafficLightsList = new ListTrafficLight();
+	}
+	
+	/**
 	 * List of cars
 	 */
 	private ListCar carsList;
@@ -68,6 +111,8 @@ public class RoadAreaGUI extends JPanel implements ActionListener {
 	
 	private Integer height;
 	
+	private IDM model;
+	
 	public Semaphore getSem() {
 		return sem;
 	}
@@ -87,25 +132,15 @@ public class RoadAreaGUI extends JPanel implements ActionListener {
 		
 		carsList = new ListCar();
 		street = new Road(new Coordinate(10f, 30f), 65, 1000, 25);
-		
-		// 5 cars + 3 traffic lights. No special behavior (such as high approaching rate)
-		carsList.add(new Car( 12f, 66f, 0f, 15f ) ); // Add in cl[0]
-		carsList.add(new Car( 32f, 66f, 5f, 15f ) ); // Add in cl[1]
-		carsList.add(new Car( 52f, 66f, 3f, 15f ) ); // Add in cl[2]
-		carsList.add(new Car( 84f, 66f, 8f, 15f ) ); // Add in cl[3]
-		carsList.add(new Car( 100f, 66f, 5f, 15f ) ); // Add in cl[4]
-
-
 		trafficLightsList = new ListTrafficLight();
-		trafficLightsList.add( new TrafficLight( new Coordinate( 300f, 80f), carsList, sem ) );
-		trafficLightsList.add( new TrafficLight( new Coordinate( 600f, 80f), carsList, sem ) );
-		trafficLightsList.add( new TrafficLight( new Coordinate( 800f, 80f), carsList, sem ) );
+		
+		//addCars();
 		
 		street.setCarList(carsList);
 		
 		this.timer = new Timer( 50, this );
 		timer.setInitialDelay(0);
-		timer.start();
+		//timer.start();
 
 	}
 	
@@ -130,8 +165,8 @@ public class RoadAreaGUI extends JPanel implements ActionListener {
 		
 		//System.out.println("Update velocity and position - Debut");
 		
-		IDM.updateCarsVelocity( this.carsList );
-		IDM.updateCarsPosition( this.carsList );
+		model.updateCarsVelocity( this.carsList );
+		model.updateCarsPosition( this.carsList );
 		
 		//System.out.println("Update velocity and position - FIN");
 		
@@ -150,5 +185,19 @@ public class RoadAreaGUI extends JPanel implements ActionListener {
 		for (Car car : carsList) {
 			car.getImage().paint(g);
 		}
+	}
+
+	/**
+	 * @return the model
+	 */
+	public IDM getModel() {
+		return model;
+	}
+
+	/**
+	 * @param model the model to set
+	 */
+	public void setModel(IDM model) {
+		this.model = model;
 	}
 }
