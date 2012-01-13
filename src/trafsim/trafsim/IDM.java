@@ -1,3 +1,11 @@
+/**
+ * Class IDM
+ * 
+ * @author Albin Poignot, Julien Teruel
+ * @version 0.1
+ * 
+ */
+
 package trafsim.trafsim;
 
 import trafsim.gui.CarGUI;
@@ -6,26 +14,9 @@ import trafsim.gui.CarGUI;
  * Representation of the Intelligent Driver Model in the system
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Intelligent_driver_model">Wikipedia link for IDM</a>
- * 
- * @author Albin Poignot, Julien Teruel
- * @version 0.1
  */
 public class IDM 
 {
-	/**
-	 * @return the desiredVelocity
-	 */
-	public Float getDesiredVelocity() {
-		return desiredVelocity;
-	}
-
-	/**
-	 * @param desiredVelocity the desiredVelocity to set
-	 */
-	public void setDesiredVelocity(Float desiredVelocity) {
-		this.desiredVelocity = desiredVelocity;
-	}
-
 	/**
 	 * Minimum spacing between all cars.
 	 */
@@ -52,9 +43,30 @@ public class IDM
 	private Integer delta = 4;
 	
 	/**
-	 * 
+	 * The desired velocity for all cars
 	 */
-	private Float desiredVelocity = new Float(15);
+	private Float desiredVelocity = 15f;
+	
+	/**
+	 * Default constructor : do nothing. <b>YOU HAVE TO INITIALIZE ALL PROPERTIES MANUALLY</b> 
+	 */
+	public IDM() {
+		// Do nothing
+	}
+	
+	/**
+	 * @return the desiredVelocity
+	 */
+	public Float getDesiredVelocity() {
+		return desiredVelocity;
+	}
+
+	/**
+	 * @param desiredVelocity the desiredVelocity to set
+	 */
+	public void setDesiredVelocity(Float desiredVelocity) {
+		this.desiredVelocity = desiredVelocity;
+	}
 	
 	/**
 	 * @return the minimumSpacing
@@ -113,8 +125,8 @@ public class IDM
 	}
 	
 	/**
-	 * Update the velocity of each car in the car list
-	 * 
+	 * Update the velocity of each car in the car list. The details of the code is available in comments
+	 * inside of the method itself.
 	 * @param carList The ListCar of the Car that should be updated
 	 */
 	public Car updateCarsVelocity(Car car, ListCar carList) {
@@ -140,74 +152,45 @@ public class IDM
 		Float term1, term3, term6;
 		Float delta_valpha, s_star, s_alpha;
 		
-		//ListCar listCar = carList;
-		
-		//for (Car car : listCar) {
+		if( car.getDesiredVelocity() != 0 )
+		{
 			
-			if( car.getDesiredVelocity() != 0 )
-			{
+			// Calculate the new velocity of the current car
+			
+			term1 = (float) Math.pow(car.getVelocity() / car.getDesiredVelocity(), delta);
+
+			if( carList.lastIndexOf(car) != (carList.size()-1)  ) // General formula
+			{	
+				delta_valpha = car.getVelocity() - carList.getNext(car).getVelocity() ;
 				
-				// Calculate the new velocity of the current car
+				term3 = (float) ((car.getVelocity() * delta_valpha) / ( 2 * Math.sqrt(this.acceleration * this.brakingDeceleration)));
+				s_star = this.minimumSpacing + car.getVelocity() * this.timeHeadway + term3;
 				
-				term1 = (float) Math.pow(car.getVelocity() / car.getDesiredVelocity(), delta);
-	
-				if( carList.lastIndexOf(car) != (carList.size()-1)  ) // General formula
-				{
-					//System.out.println("velo " + carList.getNext(car).getVelocity() + "(index : " + carList.lastIndexOf(car) + ")" );
-					
-					delta_valpha = car.getVelocity() - carList.getNext(car).getVelocity() ;
-					
-					term3 = (float) ((car.getVelocity() * delta_valpha) / ( 2 * Math.sqrt(this.acceleration * this.brakingDeceleration)));
-					s_star = this.minimumSpacing + car.getVelocity() * this.timeHeadway + term3;
-					
-					s_alpha = (float) carList.getNext(car).getPosition().getX() - car.getPosition().getX() - CarGUI.getLENGTH();
-					
-					term6 = (float) Math.pow(s_star / s_alpha, 2);
-					
-					vpoint = this.acceleration * ( 1 - term1 - term6 ) + car.getVelocity();
-					
-					if( vpoint < 0 )
-					{
-						//System.out.println("Voiture nouvelle vitesse " + vpoint + " " + term4 + " " + term5 );
-					}
-				}
-				else // Free road behavior 1 car or first car 
-				{
-					vpoint = this.acceleration * ( 1 - term1 ) + car.getVelocity();
-				}
+				s_alpha = (float) carList.getNext(car).getPosition().getX() - car.getPosition().getX() - CarGUI.getLENGTH();
 				
-				// Finally, update the velocity of the current car with the found value 
-				car.setVelocity(vpoint);
+				term6 = (float) Math.pow(s_star / s_alpha, 2);
+				
+				vpoint = this.acceleration * ( 1 - term1 - term6 ) + car.getVelocity();
 			}
-		//}
+			else // Free road behavior 1 car or first car 
+			{
+				vpoint = this.acceleration * ( 1 - term1 ) + car.getVelocity();
+			}
+			
+			// Finally, update the velocity of the current car with the found value 
+			car.setVelocity(vpoint);
+		}
 		
 		return car;
 	}
 	
 	/**
-	 * Update the position of each car in the car list
-	 * 
-	 * @param carList The ListCar of the Car that should be updated
+	 * Update the position of a car
+	 * @param car The Car that should be updated
 	 */
-	//public ListCar updateCarsPosition( ListCar carList ) 
-	public Car updateCarsPosition(Car car)
-	{
-		
-		//ListCar listCar = carList;
-		
-		/*for (Car car : listCar) 
-		{*/
-			//System.out.println("  Velocity : " + car.getVelocity() + " || rounded value : " + Math.round(car.getPosition().getX() + car.getVelocity()));
-			
-			//System.out.println("   1--> " + car.getPosition().getX() );
-			
-			Coordinate nPos = new Coordinate( car.getPosition().getX() + (car.getVelocity() / 20), car.getPosition().getY() );
-			
-			car.setPosition(nPos);
-			
-			//System.out.println("   2--> " + car.getPosition().getX() );
-		//}
-		
+	public Car updateCarPosition(Car car) {
+		Coordinate nPos = new Coordinate( car.getPosition().getX() + (car.getVelocity() / 20), car.getPosition().getY() );
+		car.setPosition(nPos);
 		return car;
 	}
 	

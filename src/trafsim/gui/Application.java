@@ -1,5 +1,5 @@
 /**
- * Principal file of the application
+ * Main file of the application
  *
  * @author Albin Poignot, Julien Teruel
  * @version 0.1
@@ -21,16 +21,12 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import trafsim.controllers.Controller;
-import trafsim.trafsim.Car;
 import trafsim.trafsim.IDM;
 
 /**
- * No description
- *
+ * Launch the application : create controllers and contains graphic interface
  */
 public class Application {
-	
-	private RoadAreaGUI road;
 	
 	private JPanel controlsArea;
 	
@@ -132,14 +128,12 @@ public class Application {
 				model = new IDM();
 				model.setAcceleration(Float.parseFloat(txtAcceleration.getText()));
 				model.setBrakingDeceleration(Float.parseFloat(txtBrakingDeceleration.getText()));
-				model.setDesiredVelocity(Float.parseFloat(txtDesiredVelocity.getText()));
+				//model.setDesiredVelocity(Float.parseFloat(txtDesiredVelocity.getText()));
 				model.setMinimumSpacing(Float.parseFloat(txtMinimumSpacing.getText()));
 				model.setTimeHeadway(Float.parseFloat(txtTimeHeadway.getText()));
 				
 				controller.setModel(model);
 				controller.startSimulation();
-				//road.setModel(model);
-				//road.startSimulation();
 			}
 			
 		});
@@ -148,7 +142,6 @@ public class Application {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				//road.stopSimulation();
 				controller.stopSimulation();
 			}
 			
@@ -158,7 +151,6 @@ public class Application {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				//road.stopSimulation();
 				controller.pauseSimulation();
 				btnPause.setEnabled(false);
 				btnResume.setEnabled(true);
@@ -170,7 +162,6 @@ public class Application {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				//road.stopSimulation();
 				controller.resumeSimulation();
 				btnPause.setEnabled(true);
 				btnResume.setEnabled(false);

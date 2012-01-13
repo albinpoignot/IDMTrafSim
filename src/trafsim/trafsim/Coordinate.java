@@ -1,12 +1,16 @@
+/**
+ * Class Coordinate
+ * 
+ * @author Albin Poignot, Julien Teruel
+ * @version 0.1
+ * 
+ */
+
 package trafsim.trafsim;
 
 /**
  * Representation of 2D coordinate in the system
- * 
- * @author Albin Poignot, Julien Teruel
- * @version 0.1
  */
-
 public class Coordinate 
 {
 	/**
@@ -17,6 +21,24 @@ public class Coordinate
 	 *  The position on the Y-Axis
 	 */
 	private Float y;
+	
+	/**
+	 * Default constructor. Sets x and y to 0.0
+	 */
+	public Coordinate()	{
+		this.x = 0f;
+		this.y = 0f;
+	}
+	
+	/**
+	 * Overload constructor to set x and y to specified values
+	 * @param x : the position on the X_axis
+	 * @param y : the position on the Y_axis
+	 */
+	public Coordinate(Float x, Float y) {
+		this.x = x;
+		this.y = y;
+	}
 	
 	/**
 	 * @return x the current position on the X-axis
@@ -43,27 +65,6 @@ public class Coordinate
 	 * @param y : the new value for y
 	 */
 	public void setY(Float y) {
-		this.y = y;
-	}
-
-	
-	/**
-	 * Default constructor set x and y to 0.0
-	 */
-	public Coordinate()
-	{
-		this.x = 0f;
-		this.y = 0f;
-	}
-	
-	/**
-	 * Constructor overload, to set x and y to specified values
-	 * @param x : the position on the X_axis
-	 * @param y : the position on the Y_axis
-	 */
-	public Coordinate(Float x, Float y)
-	{
-		this.x = x;
 		this.y = y;
 	}
 }

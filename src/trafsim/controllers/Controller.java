@@ -1,8 +1,8 @@
 /**
- * description
+ * Class Controller
  *
- * @author
- * @version
+ * @author Albin Poignot, Julien Teruel
+ * @version 0.1
  *
  */
 package trafsim.controllers;
@@ -21,20 +21,44 @@ import trafsim.trafsim.ListTrafficLight;
 import trafsim.trafsim.TrafficLight;
 
 /**
- * description
+ * Manage the relationship between GUI and mathematics model.
  *
  */
 public class Controller implements ActionListener {
 
+	/**
+	 * The RoadAreaGUI instance associated to this Controller
+	 */
+	private RoadAreaGUI roadAreaGui;
+	
 	/**
 	 * Timer to manage the RoadArea
 	 */
 	private Timer timer;
 	
 	/**
-	 * The RoadAreaGUI instance associated to this Controller
+	 * A traffic lights list
 	 */
-	private RoadAreaGUI roadAreaGui;
+	private ListTrafficLight trafficLightsList;
+	
+	/**
+	 * Overload Constructor. Initialize the timer then create a RoadAreaGUI. The timer is set to 
+	 * make a top every 50 milliseconds and the initial delay is 0.
+	 */
+	public Controller(IDM model) {
+		timer = new Timer( 50, this );
+		timer.setInitialDelay(0);
+
+		roadAreaGui = new RoadAreaGUI(model);
+		trafficLightsList = new ListTrafficLight();	
+	}
+	
+	/**
+	 * @param model The model to set
+	 */
+	public void setModel(IDM model) {
+		roadAreaGui.setModel(model);
+	}
 	
 	/**
 	 * @return the roadAreaGui
@@ -51,48 +75,20 @@ public class Controller implements ActionListener {
 	}
 
 	/**
-	 * A traffic lights list
-	 */
-	private ListTrafficLight trafficLightsList;
-	
-	/**
-	 * Default constructor. Initialize the timer then create a RoadAreaGUI. The timer is set to 
-	 * make a top every 50 milliseconds and the initial delay is 0.
-	 */
-	public Controller(IDM model) {
-		
-		timer = new Timer( 50, this );
-		timer.setInitialDelay(0);
-
-		roadAreaGui = new RoadAreaGUI(model);
-		trafficLightsList = new ListTrafficLight();
-		
-	}
-
-	/**
-	 * Catch an event from the timer. Update the velocity of all cars then update their position.
+	 * Update the velocity of all cars then update their position. This function should
+	 * not be called manually.
 	 */
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		
+	public void actionPerformed(ActionEvent arg0) {	
 		try {
 			roadAreaGui.getSem().acquire();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
-		/*ListCar cl = roadAreaGui.getModel().updateCarsVelocity(roadAreaGui.getRoad().getCarList());
-		cl = roadAreaGui.getModel().updateCarsPosition(cl);
-		
-		roadAreaGui.getRoad().setCarList(cl);*/
-	//	System.out.println("Size of carList " + roadAreaGui.getRoad().getNumberOfCars());
+
 		roadAreaGui.updateRoad();
 		
-		//System.out.println("Update velocity and position - FIN");
-		
 		roadAreaGui.getSem().release();
-		
-		//System.out.println("Vitesse apres : " + cl.get(0).getVelocity() + " || Position après (x) : " + cl.get(0).getPosition().getX() );
 		
 		for (TrafficLight tl : trafficLightsList) {
 			
@@ -120,28 +116,6 @@ public class Controller implements ActionListener {
 		roadAreaGui.repaint();
 	}
 	
-	public void startSimulation() {
-		addCars();
-		addTrafficLights();
-		timer.start();
-	}
-	
-	public void stopSimulation() {
-		timer.stop();
-		removeCars();
-		removeTrafficLights();
-		roadAreaGui.repaint();
-	}
-	
-	public void pauseSimulation() {
-		timer.stop();
-	}
-	
-	public void resumeSimulation() {
-		timer.start();
-	}
-	
-	
 	/**
 	 * Add cars in the road of the RoadAreaGUI of this instance
 	 */
@@ -152,58 +126,22 @@ public class Controller implements ActionListener {
 		roadAreaGui.getRoad().addCar(new Car( 52f, 66f, 3f, roadAreaGui.getModel().getDesiredVelocity() ));
 		roadAreaGui.getRoad().addCar(new Car( 84f, 66f, 8f, roadAreaGui.getModel().getDesiredVelocity() ));
 		roadAreaGui.getRoad().addCar(new Car( 100f, 66f, 5f, roadAreaGui.getModel().getDesiredVelocity() ));
-		
-		/*carsList.add(new Car( 12f, 66f, 0f, model.getDesiredVelocity() ) ); // Add in cl[0]
-		carsList.add(new Car( 32f, 66f, 5f, model.getDesiredVelocity() ) ); // Add in cl[1]
-		carsList.add(new Car( 52f, 66f, 3f, model.getDesiredVelocity() ) ); // Add in cl[2]
-		carsList.add(new Car( 84f, 66f, 8f, model.getDesiredVelocity() ) ); // Add in cl[3]
-		carsList.add(new Car( 100f, 66f, 5f, model.getDesiredVelocity() ) ); // Add in cl[4]*/
-		
 	}
 	
 	/**
 	 * Add traffic lights in the road of the RoadAreaGUI of this instance
 	 */
 	public void addTrafficLights() {
-		/*trafficLightsList.add( new TrafficLight( new Coordinate(300f, 80f) ) );
+		trafficLightsList.add( new TrafficLight( new Coordinate(300f, 80f) ) );
 		trafficLightsList.add( new TrafficLight( new Coordinate( 600f, 80f) ) );
-		trafficLightsList.add( new TrafficLight( new Coordinate( 800f, 80f) ) );*/
-		
-		/*for (TrafficLight tl : trafficLightsList) {
-			try {
-				insertTrafficLight(tl);
-			}
-			catch(Exception e) {
-				
-			}	
-		}*/
+		trafficLightsList.add( new TrafficLight( new Coordinate( 800f, 80f) ) );
 	}
-	
-	/**
-	 * Remove the cars in the road of the RoadAreaGUI of this instance
-	 */
-	public void removeCars() {
-		roadAreaGui.getRoad().setCarList(new ListCar());
-	}
-	
-	/**
-	 * Remove the traffic lights in the road of the RoadAreaGUI of this instance
-	 */
-	public void removeTrafficLights() {
-		trafficLightsList = new ListTrafficLight();
-	}
-	
-	public void setModel(IDM model) {
-		roadAreaGui.setModel(model);
-	}
-	
 	
 	/**
 	 * Inserts the TrafficLight to the correct position in its carList property
 	 * @throws Exception Throws an exception when the traffic light can't be inserted in the carList
 	 */
-	private void insertTrafficLight(TrafficLight tl) throws Exception 
-	{
+	private void insertTrafficLight(TrafficLight tl) throws Exception {
 		roadAreaGui.getSem().acquire(); 
 		int index = 0;
 		
@@ -217,25 +155,72 @@ public class Controller implements ActionListener {
 		
 		roadAreaGui.getRoad().addCar( index, tl );
 		
-		//System.out.println("Ajout en position " + index);
-		
 		roadAreaGui.getSem().release();
 	}
 	
 	/**
-	 * Removes the TrafficLight from its carList property
+	 * Pause the simulation by stopping the timer. All configurations and cars are kept.
+	 */
+	public void pauseSimulation() {
+		timer.stop();
+	}
+	
+	/**
+	 * Remove the cars in the road of the RoadAreaGUI of this instance
+	 */
+	public void removeCars() {
+		roadAreaGui.getRoad().setCarList(new ListCar());
+	}
+	
+	/**
+	 * Remove all the traffic lights in the road of the RoadAreaGUI of this instance
+	 */
+	public void removeTrafficLights() {
+		trafficLightsList = new ListTrafficLight();
+	}
+	
+	/**
+	 * Removes the TrafficLight from the carList
 	 * @throws Exception Throws an exception when the traffic light can't be removed from the carList
 	 */
-	private void removeTrafficLight(TrafficLight tl) throws Exception
-	{
+	private void removeTrafficLight(TrafficLight tl) throws Exception {
 		roadAreaGui.getSem().acquire();
-		
 		roadAreaGui.getRoad().removeCar(tl);
-		
 		roadAreaGui.getSem().release();
 	}
 	
+	/**
+	 * Repaint the road area
+	 */
 	public void repaint() {
 		roadAreaGui.repaint();
 	}
+	
+	/**
+	 * Resume the simulation by starting over the timer. The configuration is the same than
+	 * before the pause.
+	 */
+	public void resumeSimulation() {
+		timer.start();
+	}
+	
+	/**
+	 * Start the simulation. Add cars, add traffic lights then starts the timer.
+	 */
+	public void startSimulation() {
+		addCars();
+		addTrafficLights();
+		timer.start();
+	}
+	
+	/**
+	 * Stop the simulation. Stop the timer, remove all cars and all traffic lights then repaint the road area.
+	 */
+	public void stopSimulation() {
+		timer.stop();
+		removeCars();
+		removeTrafficLights();
+		roadAreaGui.repaint();
+	}
+
 }

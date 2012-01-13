@@ -13,17 +13,14 @@ import trafsim.gui.CarGUI;
 public class Car
 {	
 	/**
+	 * Graphical representation of the car
+	 */
+	private CarGUI carGui;
+	
+	/**
 	 * Desired velocity for all cars.
 	 */
 	private Float desiredVelocity;
-	
-	public Float getDesiredVelocity() {
-		return desiredVelocity;
-	}
-
-	public void setDesiredVelocity(Float desiredVelocity) {
-		this.desiredVelocity = desiredVelocity;
-	}
 
 	/**
 	 * Car's unique ID
@@ -36,13 +33,47 @@ public class Car
 	/**
 	 * Car's current 2D coordinate
 	 */
-	private Coordinate position;
+	private Coordinate position;	
+	
+	/**
+	 * Default constructor. Set a default position, an initial velocity of 0, a new 
+	 * CarGUI and to finish a desired velocity of 0
+	 */
+	public Car() {
+		position = new Coordinate();
+		velocity = 0f;
+		carGui = new CarGUI(position, CarGUI.getLENGTH(), CarGUI.getLENGTH());
+		desiredVelocity = 0f;
+	}
+	
+	/**
+	 * Overload constructor to initialize attributes
+	 * @param x The position of the car on the x axis
+	 * @param y The position of the car on the y axis
+	 * @param velocity The initial velocity
+	 * @param desiredVelocity Desired velocity
+	 */
+	public Car( Float x, Float y, Float velocity, Float desiredVelocity ) {
+		position = new Coordinate( x, y );
+		this.velocity = velocity;
+		this.desiredVelocity = desiredVelocity;
+		carGui = new CarGUI(position, 20, 20);
+	}
+	
+	/**
+	 * @return the desiredVelocity
+	 */
+	public Float getDesiredVelocity() {
+		return desiredVelocity;
+	}
 
 	/**
-	 * Graphical representation of the car
+	 * @param desiredVelocity the desiredVelocity to set
 	 */
-	private CarGUI image;
-
+	public void setDesiredVelocity(Float desiredVelocity) {
+		this.desiredVelocity = desiredVelocity;
+	}
+	
 	/**
 	 * @return the identifier
 	 */
@@ -56,6 +87,20 @@ public class Car
 	public void setIdentifier(Integer identifier) {
 		this.identifier = identifier;
 	}
+	
+	/**
+	 * @return the image
+	 */
+	public CarGUI getImage() {
+		return carGui;
+	}
+
+	/**
+	 * @param image the image to set
+	 */
+	public void setImage(CarGUI image) {
+		this.carGui = image;
+	}
 
 	/**
 	 * @return the position
@@ -65,11 +110,11 @@ public class Car
 	}
 
 	/**
-	 * @param position the position to set
+	 * @param position the position to set. Also set the position of the CarGUI instance.
 	 */
 	public void setPosition(Coordinate position) {
 		this.position = position;
-		this.image.setPosition(position);
+		this.carGui.setPosition(position);
 	}
 
 	/**
@@ -87,51 +132,10 @@ public class Car
 	}
 	
 	/**
-	 * @return the image
-	 */
-	public CarGUI getImage() {
-		return image;
-	}
-
-	/**
-	 * @param image the image to set
-	 */
-	public void setImage(CarGUI image) {
-		this.image = image;
-	}
-	
-	/**
-	 * Default constructor
-	 */
-	public Car()
-	{
-		position = new Coordinate();
-		velocity = new Float(0);
-		image = new CarGUI(position, 20, 20);
-		desiredVelocity = 0f;
-	}
-	
-	/**
-	 * Overload constructor to initialize attributes
-	 * @param x The position of the car on the x axis
-	 * @param y The position of the car on the y axis
-	 * @param v The initial velocity
-	 * @param dv Desired velocity
-	 */
-	public Car( Float x, Float y, Float v, Float dv )
-	{
-		position = new Coordinate( x, y );
-		velocity = v;
-		desiredVelocity = dv;
-		image = new CarGUI(position, 20, 20);
-	}
-	
-	/**
 	 * Repaint the CarGUI associated instance
 	 */
-	public void paint()
-	{
-		image.repaint();
+	public void paint() {
+		carGui.repaint();
 	}
 	
 }

@@ -1,8 +1,8 @@
 /**
- * description
+ * Class CarGUI
  *
- * @author
- * @version
+ * @author Albin Poignot, Julien Teruel
+ * @version 0.1
  *
  */
 package trafsim.gui;
@@ -15,8 +15,8 @@ import java.util.Random;
 import trafsim.trafsim.Coordinate;
 
 /**
- * description
- *
+ * Allow drawing of a Car object. All CarGUI have a fixed length which is set
+ * by the static property <code>LENGTH</code>
  */
 public class CarGUI extends Canvas {
 
@@ -50,33 +50,9 @@ public class CarGUI extends Canvas {
 	 * Color of the car
 	 */
 	private Color color;
-	
-	/**
-	 * @return the color
-	 */
-	public Color getColor() {
-		return color;
-	}
-
 
 	/**
-	 * @param color the color to set
-	 */
-	public void setColor(Color color) {
-		this.color = color;
-	}
-	
-	
-	
-	/**
-	 * @return the lENGTH
-	 */
-	public static Integer getLENGTH() {
-		return LENGTH;
-	}
-
-	/**
-	 * Overload constructor to initialize attributes. The color is set to a random one.
+	 * Overload Constructor to initialize attributes. The color is set to a random one.
 	 * @param position Initial position of the car
 	 * @param height Height of the car
 	 * @param width Width of the car
@@ -95,6 +71,28 @@ public class CarGUI extends Canvas {
 		int blue = randomGenerator.nextInt(255);
 
 		color = new Color(red,green,blue);
+	}
+	
+	/**
+	 * @return the color
+	 */
+	public Color getColor() {
+		return color;
+	}
+
+
+	/**
+	 * @param color the color to set
+	 */
+	public void setColor(Color color) {
+		this.color = color;
+	}
+	
+	/**
+	 * @return the lENGTH
+	 */
+	public static Integer getLENGTH() {
+		return LENGTH;
 	}
 	
 	/**

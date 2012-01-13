@@ -1,6 +1,9 @@
 /**
+ * Class RoadGUI
+ * 
  * @author Albin Poignot, Julien Teruel
  * @version 0.1
+ * 
  */
 package trafsim.gui;
 
@@ -13,7 +16,6 @@ import trafsim.trafsim.ListCar;
 
 /**
  * Graphic manipulation of a street. <strong>Only for drawing it !</strong>
- *
  */
 public class RoadGUI extends Canvas {
 
@@ -43,24 +45,12 @@ public class RoadGUI extends Canvas {
 	private Integer width;
 	
 	/**
-	 * Default constructor
-	 */
-	public RoadGUI() {
-		
-		// Init some properties of the draw
-		setSize(width, height); 
-		setBackground(Color.darkGray);
-		
-	}
-	
-	/**
-	 * Overload constructor to initialiaze attributes
+	 * Overload constructor to initialize attributes
 	 * @param position Position of the road
 	 * @param height Height of the road
 	 * @param width Width of the road
 	 */
 	public RoadGUI( Coordinate position, Integer height, Integer width ) {
-		
 		this.position = position;
 		this.height = height;
 		this.width = width;
@@ -94,7 +84,7 @@ public class RoadGUI extends Canvas {
 	
 	/**
 	 * Draw the road (background, border and middle line)
-	 * @see javax.swing.JFrame#update(java.awt.Graphics)
+	 * @see java.awt.Canvas#update(java.awt.Graphics)
 	 */
 	@Override
 	public void update(Graphics g) {
