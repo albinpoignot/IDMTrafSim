@@ -10,13 +10,10 @@ package trafsim.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.concurrent.Semaphore;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
 import trafsim.trafsim.Car;
 import trafsim.trafsim.Coordinate;
@@ -27,7 +24,7 @@ import trafsim.trafsim.Road;
  * Manage the draw of a road area. For now, there is only one road in
  * a road area.
  */
-public class RoadAreaGUI extends JPanel implements ActionListener {
+public class RoadAreaGUI extends JPanel {
 
 	/**
 	 * Used in case of serialization. Useless here.
@@ -48,11 +45,6 @@ public class RoadAreaGUI extends JPanel implements ActionListener {
 	 * A street in the system
 	 */
 	private Road road;
-	
-	/**
-	 * Timer for repainting.
-	 */
-	private Timer timer;
 	
 	/**
 	 * A semaphore
@@ -121,36 +113,6 @@ public class RoadAreaGUI extends JPanel implements ActionListener {
 	}
 	
 	/**
-	 * @return the timer
-	 */
-	public Timer getTimer() {
-		return timer;
-	}
-
-	/**
-	 * @param timer the timer to set
-	 */
-	public void setTimer(Timer timer) {
-		this.timer = timer;
-	}
-	
-	/**
-	 * Automatically called by a Timer. Updates the cars's velocities, release semaphores then repaint the GUI.
-	 */
-	@Override
-	public void actionPerformed(ActionEvent arg0) {			
-		try {
-			sem.acquire();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		sem.release();
-		
-		this.repaint();
-	}
-	
-	/**
 	 * Custom painting of the RoadAreaGUI : draw the road and all the cars
 	 */
 	@Override
@@ -176,4 +138,5 @@ public class RoadAreaGUI extends JPanel implements ActionListener {
 	public void updateRoad() {
 		road.updateCars();
 	}
+
 }

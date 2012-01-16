@@ -44,6 +44,8 @@ public class Application {
 	private JButton btnStop;
 	private JButton btnPause;
 	private JButton btnResume;
+	private JButton btnTLSwitch;
+	private JButton btnAddCar;
 	
 	private IDM model;
 
@@ -64,13 +66,11 @@ public class Application {
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.setSize(1200, 600);
 
-		// Road
-		//road = new RoadAreaGUI();
-		//road.setModel(model);
-		//controller.setModel(model);
+		// Controller
+		controller = new Controller(model);
 		
 		// Controls
-		controlsArea = new JPanel(new GridLayout(8, 2));
+		controlsArea = new JPanel(new GridLayout(9, 2));
 		controlsArea.setBorder(new EmptyBorder(30, 30, 30, 30));
 		
 		txtAcceleration = new JTextField(30);
@@ -119,6 +119,9 @@ public class Application {
 		btnPause = new JButton("Pause");
 		btnResume = new JButton("Resume");
 		btnResume.setEnabled(false);
+		btnTLSwitch = new JButton("Switch traffic lights");
+		btnAddCar = new JButton("Add a car");
+		btnAddCar.setEnabled(false);
 		
 		btnStart.addActionListener(new ActionListener() {
 			
@@ -134,6 +137,8 @@ public class Application {
 				
 				controller.setModel(model);
 				controller.startSimulation();
+				
+				btnAddCar.setEnabled(true);
 			}
 			
 		});
@@ -143,6 +148,7 @@ public class Application {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				controller.stopSimulation();
+				btnAddCar.setEnabled(true);
 			}
 			
 		});
@@ -169,10 +175,30 @@ public class Application {
 			
 		});
 		
+		btnTLSwitch.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				controller.switchTrafficLightsState();
+			}
+			
+		});
+		
+		btnAddCar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				controller.addCar();
+			}
+			
+		});
+		
 		controlsArea.add(btnStart);
 		controlsArea.add(btnStop);
 		controlsArea.add(btnPause);
 		controlsArea.add(btnResume);
+		controlsArea.add(btnTLSwitch);
+		controlsArea.add(btnAddCar);
 		
 		frame.setLayout(new FlowLayout());
 		frame.add(controller.getRoadAreaGui());

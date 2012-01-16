@@ -9,6 +9,7 @@ package trafsim.controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 import javax.swing.Timer;
 
@@ -37,17 +38,36 @@ public class Controller implements ActionListener {
 	private Timer timer;
 	
 	/**
+	 * Timer to add Car
+	 */
+	private Timer timerAddCar;
+	
+	/**
 	 * A traffic lights list
 	 */
 	private ListTrafficLight trafficLightsList;
 	
 	/**
 	 * Overload Constructor. Initialize the timer then create a RoadAreaGUI. The timer is set to 
-	 * make a top every 50 milliseconds and the initial delay is 0.
+	 * make a top every 50 milliseconds and the initial delay is 0. It also sets a Timer which add a new
+	 * every 2 seconds.
 	 */
 	public Controller(IDM model) {
 		timer = new Timer( 50, this );
 		timer.setInitialDelay(0);
+		
+		timerAddCar = new Timer( 7000, new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//roadAreaGui.getRoad().addCar(new Car( 12f, 66f, 0f, roadAreaGui.getModel().getDesiredVelocity() ));
+				/*Double delay = new Double(expLaw(1) * 20000);
+				System.out.println("New delay : " + delay.intValue());
+				timerAddCar.setDelay(delay.intValue());
+				timerAddCar.restart();*/
+			}
+		} );
+		timerAddCar.setInitialDelay(0);
 
 		roadAreaGui = new RoadAreaGUI(model);
 		trafficLightsList = new ListTrafficLight();	
@@ -75,7 +95,7 @@ public class Controller implements ActionListener {
 	}
 
 	/**
-	 * Update the velocity of all cars then update their position. This function should
+	 * Update the velocity of all cars then update their position. It also manage traffic lights. This function should
 	 * not be called manually.
 	 */
 	@Override
@@ -92,7 +112,7 @@ public class Controller implements ActionListener {
 		
 		for (TrafficLight tl : trafficLightsList) {
 			
-			if(tl.getState() == 1)
+			if(tl.getState() == TrafficLight.RED)
 			{
 				try {
 					insertTrafficLight(tl);
@@ -101,7 +121,7 @@ public class Controller implements ActionListener {
 					e.printStackTrace();
 				}
 			}
-			else if(tl.getState() == 3)
+			else if(tl.getState() == TrafficLight.GREEN)
 			{
 				try {
 					removeTrafficLight(tl);
@@ -119,13 +139,20 @@ public class Controller implements ActionListener {
 	/**
 	 * Add cars in the road of the RoadAreaGUI of this instance
 	 */
-	public void addCars() {
+	private void addCars() {
 		// 5 cars + 3 traffic lights. No special behavior (such as high approaching rate)
-		roadAreaGui.getRoad().addCar(new Car( 12f, 66f, 0f, roadAreaGui.getModel().getDesiredVelocity() ));
-		roadAreaGui.getRoad().addCar(new Car( 32f, 66f, 5f, roadAreaGui.getModel().getDesiredVelocity() ));
+		//roadAreaGui.getRoad().addCar(new Car( 12f, 66f, 0f, roadAreaGui.getModel().getDesiredVelocity() ));
+		/*roadAreaGui.getRoad().addCar(new Car( 32f, 66f, 5f, roadAreaGui.getModel().getDesiredVelocity() ));
 		roadAreaGui.getRoad().addCar(new Car( 52f, 66f, 3f, roadAreaGui.getModel().getDesiredVelocity() ));
 		roadAreaGui.getRoad().addCar(new Car( 84f, 66f, 8f, roadAreaGui.getModel().getDesiredVelocity() ));
-		roadAreaGui.getRoad().addCar(new Car( 100f, 66f, 5f, roadAreaGui.getModel().getDesiredVelocity() ));
+		roadAreaGui.getRoad().addCar(new Car( 100f, 66f, 5f, roadAreaGui.getModel().getDesiredVelocity() ));*/
+	}
+	
+	/**
+	 * Add a Car in a system
+	 */
+	public void addCar() {
+		roadAreaGui.getRoad().addCar(0, new Car( 12f, 66f, 0f, roadAreaGui.getModel().getDesiredVelocity() ));
 	}
 	
 	/**
@@ -133,8 +160,21 @@ public class Controller implements ActionListener {
 	 */
 	public void addTrafficLights() {
 		trafficLightsList.add( new TrafficLight( new Coordinate(300f, 80f) ) );
-		trafficLightsList.add( new TrafficLight( new Coordinate( 600f, 80f) ) );
-		trafficLightsList.add( new TrafficLight( new Coordinate( 800f, 80f) ) );
+		trafficLightsList.add( new TrafficLight( new Coordinate(600f, 80f) ) );
+		trafficLightsList.add( new TrafficLight( new Coordinate(800f, 80f) ) );
+	}
+	
+	/**
+	 * Returns a random number from a Poisson law having a exponential distribution 
+	 * between 0.0 and 1.0 
+	 * @param lambda Parameter of the distribution
+	 * @return a random number from an exponential distribution
+	 */
+	private double expLaw(double lambda) { 
+		Random rand = new Random(); 
+		Double db = rand.nextDouble();
+		return Math.log(1 - db) / (-lambda);
+		//return - (1 / lambda) * Math.log( 1 - rand.nextDouble() );*/
 	}
 	
 	/**
@@ -181,7 +221,8 @@ public class Controller implements ActionListener {
 	
 	/**
 	 * Removes the TrafficLight from the carList
-	 * @throws Exception Throws an exception when the traffic light can't be removed from the carList
+	 * @throws Exception Throws an exception when the traffic light can't be removed 
+	 * from the carList
 	 */
 	private void removeTrafficLight(TrafficLight tl) throws Exception {
 		roadAreaGui.getSem().acquire();
@@ -211,6 +252,7 @@ public class Controller implements ActionListener {
 		addCars();
 		addTrafficLights();
 		timer.start();
+		timerAddCar.start();
 	}
 	
 	/**
@@ -218,9 +260,19 @@ public class Controller implements ActionListener {
 	 */
 	public void stopSimulation() {
 		timer.stop();
+		timerAddCar.stop();
 		removeCars();
 		removeTrafficLights();
 		roadAreaGui.repaint();
+	}
+	
+	/**
+	 * Switch the state of all traffic lights from GREEN to RED, or from RED to GREEN
+	 */
+	public void switchTrafficLightsState() { 
+		for (TrafficLight tl : trafficLightsList) {
+			tl.switchState();
+		}
 	}
 
 }

@@ -26,10 +26,12 @@ public class Car
 	 * Car's unique ID
 	 */
 	private Integer identifier;
+	
 	/**
 	 * Car's current velocity
 	 */
 	private Float velocity;
+	
 	/**
 	 * Car's current 2D coordinate
 	 */

@@ -114,9 +114,7 @@ public class CarGUI extends Canvas {
 	 */
 	@Override
 	public void paint(Graphics g) {
-		
 		update(g);
-		
 	} 
 	
 	/**
