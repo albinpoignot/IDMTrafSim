@@ -125,9 +125,11 @@ public class IDM
 	}
 	
 	/**
-	 * Update the velocity of each car in the car list. The details of the code is available in comments
+	 * Update the velocity of the given car in the list. The details of the code is available in comments
 	 * inside of the method itself.
+	 * @param car The car to update
 	 * @param carList The ListCar of the Car that should be updated
+	 * @return The updated car
 	 */
 	public Car updateCarsVelocity(Car car, ListCar carList) {
 		
