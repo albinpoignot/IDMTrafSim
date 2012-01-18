@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
+---- This project was realized during classes in Polytech Tours french school ----
+
 IDMTrafSim provides an implementation of the Intelligent Driver Model. You can found some description about this mathematics model here : 
 http://en.wikipedia.org/wiki/Intelligent_driver_model.
  
